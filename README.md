@@ -2,6 +2,8 @@
 ## Version 2024.04
 ## for the Arduino Mega 2560 Rev3
 
+NOTE!: Please check out the latest release. Subsequent releases have additional features.
+
 Re-imagined rules for Bally's 1981 Flash Gordon pinball machine. Based on the Bally/Stern Operating System (BSOS), and implemented by adding a daughter card to the MPU's J5 connector. The card can be built yourself using instructions available online. I did not build mine myself and so cannot really advise you. The link to the original instructions is gone, but copies occasionally pop up online.
 
 A safer option is to purchase a kit, or even a pre-built card. Both are available at:
