@@ -28,9 +28,10 @@ Even if you have a Geeteoh board, you may need the latest software update. This 
 https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk . Or write some amazing code to handle an original strobe and let me know!
 
 ### To use this code
-* See https://youtu.be/hn4zS7xABDA for a helpful video from Dave's Think Tank, covering the instructions below.
-* Download this zip file (Code > Download ZIP) or clone the repository to your hard drive.
-* Unzip the FG2024p08 repository and make sure the parent folder is named: FG2024p08
+
+* Under "Releases", click on "Latest".
+* Click on each file to download. 
+* Place all files in a folder named: FG2024p08
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
 * Find FG2024p08.ino in your FG2024p08 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
