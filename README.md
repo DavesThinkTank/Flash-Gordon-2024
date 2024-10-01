@@ -1,5 +1,5 @@
 # Flash Gordon 2024
-## Version 2024.08
+## Version 2024.09
 ## for the Arduino Mega 2560 Rev3
 
 NOTE!: Please check out the latest release. Subsequent releases have additional features.
@@ -31,25 +31,50 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk . Or write some amazing code to
 
 * Under "Releases", click on "Latest".
 * Click on each file to download. 
-* Place all files in a folder named: FG2024p08
+* Place all files in a folder named: FG2024p09
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2024p08.ino in your FG2024p08 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2024p09.ino in your FG2024p09 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh, if you have one (if you don't have one, buy one!)
 
 ### Operator game adjustments
-This section is at the top of the FG2024p08.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2024p09.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit (see below). Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
 
 ### How to operate self-test / audit / game settings
 - Inner coin door button: Enters self-test / audit mode and advances through sections
-- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2024-08manual.docx for a full explanation of the self-tests and game settings available.
+- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2024-09manual.docx for a full explanation of the self-tests and game settings available.
 - Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+Version 2024.09 by Dave's Think Tank
+
+Additions and changes in this version:
+
+- Added code to kick ball out of saucer, should it be there during attract mode, rather than wait until a game begins.
+- Changed bonus circle display for values over ten: all values lit except for units digit of value. (Looks better during countdown, seriously).
+- Added a kid mode, where all settings are changed to reduce difficulty of the game. See KidSettings() function to modify.
+- Kid sounds added at start and end of games in kid mode.
+- Added quick way to start and end kid mode. In self test, press game button and coin 3 button at same time. Does not work during switch test!
+- Added "Reset Hold" feature to tests for lights, displays, and DIP switches. Reset Hold scrolls quickly through the display / review options.
+- Reset Hold option on audit settings sped up considerably.
+- Solenoids can be made to stop firing during solenoid test by pressing otherSwitch (Coin slot 3 switch)
+
+Modified Rules:
+
+- If spinner hit within 5 seconds of hitting the lit flipper feed lane you will receive 15000 points, in addition to 2000 per spin. Adds incentive to quickly hit spinners.
+
+Bug Fixes:
+
+- Pressing game button during game and after ball 1 would restart game. It looks like this was intentional, although I can't see why, so I removed it.
+- Bug in Geeteoh that would restart background music at the end of 15 second alarm, even if the background music had changed, has been fixed. 
+    So, temporary fix in this software has been removed.
+- Slam switch will no longer end self-test during the switch test. It will simply register as a switch.
+
+
 Version 2024.08 (2024/09/02, by Dave's Think Tank)
 
 Additions and changes in this version:
