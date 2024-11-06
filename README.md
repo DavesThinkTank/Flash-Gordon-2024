@@ -1,5 +1,5 @@
 # Flash Gordon 2024
-## Version 2024.09
+## Version 2024.10
 ## for the Arduino Mega 2560 Rev3
 
 NOTE!: Please check out the latest release. Subsequent releases have additional features.
@@ -31,25 +31,45 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk . Or write some amazing code to
 
 * Under "Releases", click on "Latest".
 * Click on each file to download. 
-* Place all files in a folder named: FG2024p09
+* Place all files in a folder named: FG2024p10
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2024p09.ino in your FG2024p09 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2024p10.ino in your FG2024p10 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh, if you have one (if you don't have one, buy one!)
 
 ### Operator game adjustments
-This section is at the top of the FG2024p09.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2024p10.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit (see below). Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
 
 ### How to operate self-test / audit / game settings
 - Inner coin door button: Enters self-test / audit mode and advances through sections
-- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2024-09manual.docx for a full explanation of the self-tests and game settings available.
+- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2024-10manual.docx for a full explanation of the self-tests and game settings available.
 - Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+Version 2024.10 by Dave's Think Tank
+
+Additions and changes in this version:
+
+- SwitchDebounce[] structure created, where operator can set timing of switch hits to eliminate double hits (see "Bug Fixes" below).
+- ResetHits[] structure created, where operator can set timing to avoid solenoid resets from activating switches (see "Bug Fixes" below).
+- Debugger() modified to scroll most recent nine switches hit through player 2, 3, and 4 displays. Hold credit button to stop.
+- LoopCount() written to determine number of times per second the switches are monitored (results: ~180-200 during game play).
+- DEBUG_MESSAGES changed to DEBUG_MODE, to allow more debug options in the future.
+- DEBUG_MODE = 2 added to display at player display 4 the number of times per second the switches are monitored (LoopCount() above).
+
+Bug Fixes:
+
+I'm not sure if this counts as a bug! But I was having a fair amount of difficulty in my machine with switches activating due to switch "bounce".Switches would sometimesactivate twice, or activate due to vibration from solenoids firing on the playfield. Cleaning and regapping couldn't solve all the issues. I have since found out that other Arduinoprojects make extensive use of timers to watch for and eliminate this type of switch activity. My solution was to write the data structures mentioned above, SwitchDebounce[] and ResetHits[], as well as the functions DoubleHitFix(), ResetHitFix(), and My_PushToTimedSolenoidStack(). These five items record the timing of every switch hit and solenoid firing, and ensure the problem switches are not allowed to activate again within a user-adjustable time period. 
+
+To use these solutions you need to identify a problem switch or solenoid / switch combination. To fix a switch that is double hitting, simply set a "wait" time in the secondcolumn of SwitchDebounce[] on the row identifying the switch to be fixed. Any time up to 255ms can be entered. The time selected must be long enough to cover the expected gap between hits, and short enough to allow for any possible way that the switch could legitimately be hit twice. I have already added wait times for all drop target switches, as well as two switches which were giving me trouble; the shooter lane wire rollover and the right outlane.I've also done the leftoutlane and both slingshots. I stopped there,as there is no reason to add this fix to switches that are not malfunctioning.
+
+To fix a solenoid that is activating a switch,set a "wait" time in thesecond column of ResetHits[] on the row identifying the solenoid that is causing a problem.Any time up to 255ms can be entered. Now you need to identify the switch that is being incorrectly activated. This is done byadding code to the function ResetHitFix().There are already several examples included to copy from.Simply set up a case statement for the switch, and "return true" if the current time less the start time of the solenoidis less that the wait time for the solenoid. I have already added code to cover all drop target switches being activated by their own drop target reset solenoid.
+
+
 Version 2024.09 by Dave's Think Tank
 
 Additions and changes in this version:
@@ -70,7 +90,7 @@ Modified Rules:
 Bug Fixes:
 
 - Pressing game button during game and after ball 1 would restart game. It looks like this was intentional, although I can't see why, so I removed it.
-- Bug in Geeteoh that would restart background music at the end of 15 second alarm, even if the background music had changed, has been fixed. 
+- Bug in Geeteoh that would restart background music at the end of 15 seconds, even if the background music had changed, has been fixed. 
     So, temporary fix in this software has been removed.
 - Slam switch will no longer end self-test during the switch test. It will simply register as a switch.
 
