@@ -1,5 +1,5 @@
 # Flash Gordon 2024
-## Version 2024.10
+## Version 2024.11
 ## for the Arduino Mega 2560 Rev3
 
 NOTE!: Please check out the latest release. Subsequent releases have additional features.
@@ -31,26 +31,59 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk . Or write some amazing code to
 
 * Under "Releases", click on "Latest".
 * Click on each file to download. 
-* Place all files in a folder named: FG2024p10
+* Place all files in a folder named: FG2024p11
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2024p10.ino in your FG2024p10 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2024p11.ino in your FG2024p11 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh, if you have one (if you don't have one, buy one!)
 
 ### Operator game adjustments
-This section is at the top of the FG2024p10.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2024p11.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit (see below). Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
 
 ### How to operate self-test / audit / game settings
 - Inner coin door button: Enters self-test / audit mode and advances through sections
-- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2024-10manual.docx for a full explanation of the self-tests and game settings available.
+- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2024-11manual.docx for a full explanation of the self-tests and game settings available.
 - Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
-Version 2024.10 by Dave's Think Tank
+### Version 2024.11 by Dave's Think Tank
+
+Additions and changes in this version:
+
+- Solenoid test modified to show any switches activated by vibration from firing solenoids.
+
+Modified Rules:
+
+- The original rule was that the X2 and X3 bonuses could only be won once per ball. By setting self-test entry #25 (OriginalRules) to 1, this rule is
+    maintained. Or, by setting it to 0, the X2 and X3 bonuses will be reset after the 15-second timer is complete, to be won all over again.
+- Self-test #25 (Original Rules) also affects the collection of mini-bonus at the upper-level target, and super-bonus in the shooter lane. Under original rules,
+    after these bonuses were collected, they were set to zero and had to be earned again. Under new rules these bonuses can be collected repeatedly, until
+    finally collected and reset to zero in the outhole.
+- In the 2021 version, if you hit the left-side targets but missed the 15-seconds to hit the lower-level, right-side targets for 50,000 points, you had to 
+    hit the left-side targets all over again. I thought this was overly punitive, but instead of just removing it, I compromised by saying you would get
+    zero points when you ultimately did hit the right targets. But then I thought, "Why am I compromising? It's my game now!". So under these circumstances,
+    if you hit the right side target after 15 seconds, missing the 50,000 points, you will still get 10,000 points.
+- Standard number of wizard goal targets changed from 16 to 11.
+
+Bug Fixes:
+
+- Up/down kicker delayed 500ms when activated during attract mode, to give ball time to settle.
+- Match has a four-second delay at the end to allow matching digits to flash. But if there is no match, it was still waiting four seconds to enter attract mode. Delay
+    removed if there is no match.
+- Skill Shot mode ends when you hit something on the upper playfield. Why not the lower playfield? I always wondered if this was a bug or a feature, as it
+    seemed deliberate. However, I've now decided, it is a bug. Skill Shot mode will now end when you hit any switch on the playfield, upper or lower level.
+- if you add a player and the number of credits decreases below the maximum credits, the coin lockout mechanism is now turned off to allow you to spend more money.
+- Two BSOS solenoid functions are used in the program, but only one was included in the debounce changes for the previous version. both are included now.
+- The new solenoid / switch test indicated the 4-drop-target bank was setting off the wood beast switch. Used Debounce structures and ResetHitFix() to resolve.
+- A longstanding issue, where leaving self-test using the self-test button would sometimes take you straight back into self-test, has been resolved.
+- Player 1 would be blank for a couple seconds at beginning of game. fixed.
+
+
+### Version 2024.10 (2024/11/06, by Dave's Think Tank)
 
 Additions and changes in this version:
 
@@ -63,14 +96,14 @@ Additions and changes in this version:
 
 Bug Fixes:
 
-I'm not sure if this counts as a bug! But I was having a fair amount of difficulty in my machine with switches activating due to switch "bounce".Switches would sometimesactivate twice, or activate due to vibration from solenoids firing on the playfield. Cleaning and regapping couldn't solve all the issues. I have since found out that other Arduinoprojects make extensive use of timers to watch for and eliminate this type of switch activity. My solution was to write the data structures mentioned above, SwitchDebounce[] and ResetHits[], as well as the functions DoubleHitFix(), ResetHitFix(), and My_PushToTimedSolenoidStack(). These five items record the timing of every switch hit and solenoid firing, and ensure the problem switches are not allowed to activate again within a user-adjustable time period. 
+I'm not sure if this counts as a bug! But I was having a fair amount of difficulty in my machine with switches activating due to switch "bounce". Switches would sometimes activate twice, or activate due to vibration from solenoids firing on the playfield. Cleaning and re-gapping couldn't solve all the issues. I have since found out that other Arduino projects make extensive use of timers to watch for and eliminate this type of switch activity. My solution was to write the data structures mentioned above, SwitchDebounce[] and ResetHits[], as well as the functions DoubleHitFix(), ResetHitFix(), and My_PushToTimedSolenoidStack(). These five items record the timing of every switch hit and solenoid firing, and ensure the problem switches are not allowed to activate again within a user-adjustable time period. 
 
-To use these solutions you need to identify a problem switch or solenoid / switch combination. To fix a switch that is double hitting, simply set a "wait" time in the secondcolumn of SwitchDebounce[] on the row identifying the switch to be fixed. Any time up to 255ms can be entered. The time selected must be long enough to cover the expected gap between hits, and short enough to allow for any possible way that the switch could legitimately be hit twice. I have already added wait times for all drop target switches, as well as two switches which were giving me trouble; the shooter lane wire rollover and the right outlane.I've also done the leftoutlane and both slingshots. I stopped there,as there is no reason to add this fix to switches that are not malfunctioning.
+To use these solutions you need to identify a problem switch or solenoid / switch combination. To fix a switch that is double hitting, simply set a "wait" time in the second column of SwitchDebounce[] on the row identifying the switch to be fixed. Any time up to 255ms can be entered. The time selected must be long enough to cover the expected gap between hits, and short enough to allow for any possible way that the switch could legitimately be hit twice. I have already added wait times for all drop target switches, as well as two switches which were giving me trouble; the shooter lane wire rollover and the right outlane. I've also done the left outlane and both slingshots. I stopped there, as there is no reason to add this fix to switches that are not malfunctioning.
 
-To fix a solenoid that is activating a switch,set a "wait" time in thesecond column of ResetHits[] on the row identifying the solenoid that is causing a problem.Any time up to 255ms can be entered. Now you need to identify the switch that is being incorrectly activated. This is done byadding code to the function ResetHitFix().There are already several examples included to copy from.Simply set up a case statement for the switch, and "return true" if the current time less the start time of the solenoidis less that the wait time for the solenoid. I have already added code to cover all drop target switches being activated by their own drop target reset solenoid.
+To fix a solenoid that is activating a switch, set a "wait" time in the second column of ResetHits[] on the row identifying the solenoid that is causing a problem.Any time up to 255ms can be entered. Now you need to identify the switch that is being incorrectly activated. This is done by adding code to the function ResetHitFix().There are already several examples included to copy from.Simply set up a case statement for the switch, and "return true" if the current time less the start time of the solenoid is less that the wait time for the solenoid. I have already added code to cover all drop target switches being activated by their own drop target reset solenoid.
 
 
-Version 2024.09 by Dave's Think Tank
+### Version 2024.09 (2024/10/01, by Dave's Think Tank)
 
 Additions and changes in this version:
 
@@ -95,7 +128,7 @@ Bug Fixes:
 - Slam switch will no longer end self-test during the switch test. It will simply register as a switch.
 
 
-Version 2024.08 (2024/09/02, by Dave's Think Tank)
+### Version 2024.08 (2024/09/02, by Dave's Think Tank)
 
 Additions and changes in this version:
 
@@ -121,7 +154,7 @@ Bug Fixes:
 
 
 
-Version 2024.07 (2024/08/08, Dave's Think Tank):
+### Version 2024.07 (2024/08/08, by Dave's Think Tank):
 Additions and changes in this version:
 
 (I was given access to the Geeteoh software code, and made a few minor additions to it. These changes make no difference to regular use of a Geeteoh board, but extend its capabilities for use with an Arduino. Geeteoh plans to include the changes in future releases. If you already have a Geeteoh, contact geeteoh.com. He will likely be willing to sell you a replacement chip which will make your current board completely compatible with this software.)
@@ -147,7 +180,9 @@ Bug Fixes:
 
 
 
-V2024.06 (2024/06/25, Dave's Think Tank):
+### V2024.06 (2024/06/25, by Dave's Think Tank):
+Additions and changes in this version:
+
 - Added Final Battle stats to self-test (skill shots, Final Battles reached, Final Battles beaten). See self-tests 13, 14, and 15.(These appear to have been part of the original code, but were not included in the version I started with.)
 - Added Final Battle drop target goal to self-test game settings. Automatically set to 16 if not yet entered.
 - Added Final Battle attack goal to self-test game settings. Automatically set to 140 if not yet entered.
@@ -169,7 +204,9 @@ Bug Fixes:
 
 
 
-V2024.04 (2024/06/02, Dave's Think Tank):
+### V2024.04 (2024/06/02, by Dave's Think Tank):
+Additions and changes in this version:
+
 - Added DIP switch functions, based on original Bally manual
 - Added extensive functionality to the self-tests
 - Added game settings based on original Bally settings
@@ -180,7 +217,7 @@ V2024.04 (2024/06/02, Dave's Think Tank):
 
 
 
-v1.0.0 (10/21/21):
+### v1.0.0 (10/21/21, by Tim Murren):
 - Created this alternate version of FG2021 that supports the latest BSOS version and is meant to be use with the revision 3 board (Arduino Mega 2560 Rev3)
 - Added audit for how many times the high score has been beat
 - Added total replays to self-test / audit
