@@ -4,7 +4,7 @@
 
 https://github.com/DavesThinkTank/Flash-Gordon-2024/releases/tag/v2024.11
 
-NOTE!: Please check out the latest release at the link above. Subsequent releases have additional features. The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2024) and the Credit window (12). If it doesn't, you have the wrong software or the wrong version!
+NOTE!: Please check out the latest release at the link above. Subsequent releases have additional features. The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2024) and the Credit window (11). If it doesn't, you have the wrong software or the wrong version!
 
 Re-imagined rules for Bally's 1981 Flash Gordon pinball machine. Based on the Bally/Stern Operating System (BSOS), and implemented by adding a daughter card to the MPU's J5 connector. The card can be built yourself using instructions available online. I did not build mine myself and so cannot really advise you. The link to the original instructions is gone, but copies occasionally pop up online.
 
