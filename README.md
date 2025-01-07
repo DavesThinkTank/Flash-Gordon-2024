@@ -1,10 +1,8 @@
 # Flash Gordon 2024
-## Version 2024.11
+## Version 2024.12
 ## for the Arduino Mega 2560 Rev3
 
-https://github.com/DavesThinkTank/Flash-Gordon-2024/releases/tag/v2024.11
-
-NOTE!: Please check out the latest release at the link above. Subsequent releases have additional features. The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2024) and the Credit window (11). If it doesn't, you have the wrong software or the wrong version!
+NOTE!: Please check out the latest release. Subsequent releases have additional features.
 
 Re-imagined rules for Bally's 1981 Flash Gordon pinball machine. Based on the Bally/Stern Operating System (BSOS), and implemented by adding a daughter card to the MPU's J5 connector. The card can be built yourself using instructions available online. I did not build mine myself and so cannot really advise you. The link to the original instructions is gone, but copies occasionally pop up online.
 
@@ -33,14 +31,14 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk . Or write some amazing code to
 
 * Under "Releases", click on "Latest".
 * Click on each file to download. 
-* Place all files in a folder named: FG2024p11
+* Place all files in a folder named: FG2024p12
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2024p11.ino in your FG2024p11 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2024p12.ino in your FG2024p12 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh, if you have one (if you don't have one, buy one!)
 
 ### Operator game adjustments
-This section is at the top of the FG2024p11.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2024p12.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit (see below). Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
@@ -52,6 +50,22 @@ Score award thresholds and other game settings can be set in self-test / audit (
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+### Version 2024.12 by Dave's Think Tank
+
+Additions and changes in this version:
+
+- When the solenoid test identifies a switch set off by vibration, it will also note the time in milliseconds between the solenoid firing and the switch activating.
+- When you defeat Ming and are informed, "You've saved your Earth", you will also receive this same message again when the game ends, no matter what your 
+    score (PersonalGoalOn must be set to true)
+- Placed a break between multiple bonus countdowns, and between mini and super bonus countdowns, at end of ball.
+
+Bug Fixes:
+
+- Fixed Debugger() to continue game after hitting the game credit button, but discontinue displaying switches for as long as the button is held.
+- If skill shot ended by hitting something on playfield, bonus points would not show until another bonus target was hit. Fixed.
+- "You've saved your Earth" was not always playing when Ming was defeated. Added a sound stop code, and 10 ms delay. Seems to work now.
+- Cleaned up old unused code. Removed old CPC (coins per credit) code from SelfTestAndAudit, replaced long ago with DIP switch controls.
+
 ### Version 2024.11 by Dave's Think Tank
 
 Additions and changes in this version:
