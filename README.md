@@ -1,20 +1,21 @@
 # Flash Gordon 2024
-## Version 2024.12
+## Version 2025.01
 ## for the Arduino Mega 2560 Rev3
 
-https://github.com/DavesThinkTank/Flash-Gordon-2024/releases/tag/v2024.12
+https://github.com/DavesThinkTank/Flash-Gordon-2024/releases/tag/v2025.01
 
-NOTE!: Please check out the latest release at the link above. Subsequent releases have additional features. The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2024) and the Credit window (12). If it doesn't, you have the wrong software or the wrong version!
+NOTE!: Please check out the latest release at the link above. Subsequent releases have additional features. The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (01). If it doesn't, you have the wrong software or the wrong version!
 
-Re-imagined rules for Bally's 1981 Flash Gordon pinball machine. Based on the Bally/Stern Operating System (BSOS), and implemented by adding a daughter card to the MPU's J5 connector. The card can be built yourself using instructions available online. I did not build mine myself and so cannot really advise you. The link to the original instructions is gone, but copies occasionally pop up online.
+
+Re-imagined rules for Bally's 1981 Flash Gordon pinball machine. Implemented using the Retro Pin Upgrade (RPU), using a daughter card connected to the MPU's J5 connector. The card can be built yourself using instructions available online. I did not build mine myself and so cannot really advise you. The link to the original instructions is gone, but copies occasionally pop up online.
 
 A safer option is to purchase a kit, or even a pre-built card. Both are available at:
-https://pinside.com/pinball/market/shops/1304-roygbev-pinball/by-game/185-flash-gordon   (Be sure to ask for a MEGA 2560 REV3!!!)
+https://pinside.com/pinball/market/shops/1304-roygbev-pinball/by-game/185-flash-gordon
 
 Note: if this link is out of date, you will have to find a current link yourself. I had to!
 
 ### Important Notes!
-* This version is meant to be used with a Geeteoh sound board. If you are using an original Bally Squawk & Talk, or some board compatible with it, the sounds should work for the most part, but there may be some minor issues with sounds not playing under some circumstances. The best way to handle this is to comment out line 35 (add // at the beginning) in file BSOS_Config.h as follows:
+* This version is meant to be used with a Geeteoh sound board. If you are using an original Bally Squawk & Talk, or some board compatible with it, the sounds should work for the most part, but there may be some minor issues with sounds not playing under some circumstances. The best way to handle this is to comment out the definition of RPU_OS_USE_GEETEOH (add // at the beginning) in Operator Game Adjustments as follows:
 
 // #define BALLY_STERN_OS_USE_GEETEOH 
 
@@ -31,27 +32,46 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk . Or write some amazing code to
 
 ### To use this code
 
+From my Flash Gordon GitHub page (https://github.com/DavesThinkTank/Flash-Gordon-2024):
 * Under "Releases", click on "Latest".
 * Click on each file to download. 
-* Place all files in a folder named: FG2024p12
+* Place all files in a folder named: FG2025p01
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2024p12.ino in your FG2024p12 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2025p01.ino in your FG2025p01 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh, if you have one (if you don't have one, buy one!)
 
 ### Operator game adjustments
-This section is at the top of the FG2024p12.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2025p01.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit (see below). Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
 
 ### How to operate self-test / audit / game settings
 - Inner coin door button: Enters self-test / audit mode and advances through sections
-- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2024-11manual.docx for a full explanation of the self-tests and game settings available.
+- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-01manual.docx for a full explanation of the self-tests and game settings available.
 - Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+### Version 2025.01 by Dave's Think Tank
+
+Additions and changes in this version:
+
+- New double-hit switch bounce test added, in addition to the stuck switch / switch matrix test.
+- I thought, "Hey, shouldn't kids be able to put the machine into Kid's Mode?" So you can now access Kid's Mode by pressing the game button and coin 3
+    switch at the same time (hold until sound plays). Requires an extension of the coin 3 switch on the outside of the machine. I have a switch added, 
+    unobtrusively inside the coin return.
+- Created separate file for version notes. Notes were getting too long to scroll through all the time!
+- Converted from BSOS (Bally/Stern Operating System) to RPU (Retro Pin Upgrade). RPU is an extension of BSOS. BSOS is no longer maintained.
+- Moved definition of RPU_OS_USE_GEETEOH to Operator Game Adjustments in primary file, rather than RPU configuration file. Made required software changes.
+
+Bug Fixes:
+
+- Sound does not always stop when ball in outhole. Moved the stop-sound code so it is not clobbered immediately by the countdown bonus sounds.
+
+
+
 ### Version 2024.12 by Dave's Think Tank
 
 Additions and changes in this version:
