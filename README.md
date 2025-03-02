@@ -69,8 +69,9 @@ Additions and changes in this version:
 Bug Fixes:
 
 - Sound does not always stop when ball in outhole. Moved the stop-sound code so it is not clobbered immediately by the countdown bonus sounds.
-
-
+- RPU_ReadByteFromEEProm sets value to zero if it equals 255! Removed, allowing byte = 255.
+- Coin counts were limited to 255 per slot, even though saved in unsigned long variables. Increased to 4 billion.
+- Solenoid / Switch test would "detect" self test switch hit on first solenoid. Fixed.
 
 ### Version 2024.12 by Dave's Think Tank
 
