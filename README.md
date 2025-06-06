@@ -2,17 +2,15 @@
 ## Version 2025.01
 ## for the Arduino Mega 2560 Rev3
 
-https://github.com/DavesThinkTank/Flash-Gordon-2024/releases/tag/v2025.01
+https://github.com/DavesThinkTank/Flash-Gordon-2024/releases/tag/v2025.03
 
-NOTE!: Please check out the latest release at the link above. Subsequent releases have additional features. The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (01). If it doesn't, you have the wrong software or the wrong version!
+NOTE!: Please check out the latest release at the link above. Subsequent releases have additional features. The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (03). If it doesn't, you have the wrong software or the wrong version!
 
+Re-imagined rules for Bally's 1981 Flash Gordon pinball machine. Implemented using the Retro Pin Upgrade (RPU), using a daughter card connected to the MPU's J5 connector. The card can be built yourself using instructions available online. The following website can help you with this: 
+https://www.pinballrefresh.com/retro-pin-upgrade-rpu
 
-Re-imagined rules for Bally's 1981 Flash Gordon pinball machine. Implemented using the Retro Pin Upgrade (RPU), using a daughter card connected to the MPU's J5 connector. The card can be built yourself using instructions available online. I did not build mine myself and so cannot really advise you. The link to the original instructions is gone, but copies occasionally pop up online.
-
-A safer option is to purchase a kit, or even a pre-built card. Both are available at:
+An easier option is to purchase a kit, or even a pre-built card. Both are available at: 
 https://pinside.com/pinball/market/shops/1304-roygbev-pinball/by-game/185-flash-gordon
-
-Note: if this link is out of date, you will have to find a current link yourself. I had to!
 
 ### Important Notes!
 * This version is meant to be used with a Geeteoh sound board. If you are using an original Bally Squawk & Talk, or some board compatible with it, the sounds should work for the most part, but there may be some minor issues with sounds not playing under some circumstances. The best way to handle this is to comment out the definition of RPU_OS_USE_GEETEOH (add // at the beginning) in Operator Game Adjustments as follows:
