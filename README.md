@@ -63,7 +63,7 @@ Bug Fixes:
     Will continue to watch - so far no issue.
     
 
-### Version 2025.03 by Dave's Think Tank**
+###Version 2025.03 by Dave's Think Tank
 
 Additions and changes in this version:
 
