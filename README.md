@@ -59,13 +59,13 @@ Additions and changes in this version:
 
 Bug Fixes:
 
-- Replaced PlaySound() and PlayQueue() functions with functions written for the Bally Star Trek. These allow up to 20 voices to be stored in the queue, rather than just 1.
-    The programming is tighter as well, hopefully leading to a solution for the double-background sounds mentioned in 2025.03 above. 
+- Replaced PlaySound() and PlayQueue() functions with functions written for the Bally Star Trek. These allow up to 20 voices to be stored in the queue, rather than
+    just 1. The programming is tighter as well, hopefully leading to a solution for the double-background sounds mentioned in 2025.03 above. 
     Added code to ensure a minimum time allowed for Geeteoh to deal with each sound - currently 25 ms. Hopefully this ensures all sounds and other commands played.
     Will continue to watch - so far no issue.
     
 
-###Version 2025.03 by Dave's Think Tank
+### Version 2025.03 by Dave's Think Tank
 
 Additions and changes in this version:
 
