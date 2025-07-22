@@ -1,10 +1,10 @@
 # Flash Gordon 2024
-## Version 2025.01
+## Version 2025.07
 ## for the Arduino Mega 2560 Rev3
 
-https://github.com/DavesThinkTank/Flash-Gordon-2024/releases/tag/v2025.03
+https://github.com/DavesThinkTank/Flash-Gordon-2024/releases/tag/v2025.07
 
-NOTE!: Please check out the latest release at the link above. Subsequent releases have additional features. The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (03). If it doesn't, you have the wrong software or the wrong version!
+NOTE!: Please check out the latest release at the link above. Subsequent releases have additional features. The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (07). If it doesn't, you have the wrong software or the wrong version!
 
 Re-imagined rules for Bally's 1981 Flash Gordon pinball machine. Implemented using the Retro Pin Upgrade (RPU), using a daughter card connected to the MPU's J5 connector. The card can be built yourself using instructions available online. The following website can help you with this: 
 https://www.pinballrefresh.com/retro-pin-upgrade-rpu
@@ -30,28 +30,54 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk . Or write some amazing code to
 
 ### To use this code
 
-From my Flash Gordon GitHub page (https://github.com/DavesThinkTank/Flash-Gordon-2024):
 * Under "Releases", click on "Latest".
 * Click on each file to download. 
-* Place all files in a folder named: FG2025p01
+* Place all files in a folder named: FG2025p07
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2025p01.ino in your FG2025p01 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2025p07.ino in your FG2025p07 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh, if you have one (if you don't have one, buy one!)
 
 ### Operator game adjustments
-This section is at the top of the FG2025p01.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2025p07.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit (see below). Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
 
 ### How to operate self-test / audit / game settings
 - Inner coin door button: Enters self-test / audit mode and advances through sections
-- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-01manual.docx for a full explanation of the self-tests and game settings available.
+- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-03manual.docx for a full explanation of the self-tests and game settings available.
 - Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+### Version 2025.07 by Dave's Think Tank
+
+Additions and changes in this version:
+
+Bug Fixes:
+
+- Replaced PlaySound() and PlayQueue() functions with functions written for the Bally Star Trek. These allow up to 20 voices to be stored in the queue, rather than just 1.
+    The programming is tighter as well, hopefully leading to a solution for the double-background sounds mentioned in 2025.03 above. 
+    Added code to ensure a minimum time allowed for Geeteoh to deal with each sound - currently 25 ms. Hopefully this ensures all sounds and other commands played.
+    Will continue to watch - so far no issue.
+    
+
+### Version 2025.03 by Dave's Think Tank**
+
+Additions and changes in this version:
+
+- Sometimes the Geeteoh seems to allow two background sounds to play at the same time. I'm not sure if this is just my machine! But I've added an option to define a variable STOP_THE_MUSIC equal to 1, which
+    causes the game button to turn off the background music temporarily during a game. Note that, once a game starts, you cannot add another player with this option. Setting it to zero results in normal play.
+- Switch bounce Test: clear time in player 2 display if hit time exceeds 500 ms.
+
+Bug Fixes:
+
+- High score light stayed on when player score displayed during attract mode (before first game only)
+- Saucer-down solenoid stayed on for 1/2 second when kicking ball out of saucer during attract mode.
+- The random(A, B) function selects a random number between A and B+1, NOT B! Only affects match. Fixed!
+
+
 ### Version 2025.01 by Dave's Think Tank
 
 Additions and changes in this version:
@@ -70,6 +96,8 @@ Bug Fixes:
 - RPU_ReadByteFromEEProm sets value to zero if it equals 255! Removed, allowing byte = 255.
 - Coin counts were limited to 255 per slot, even though saved in unsigned long variables. Increased to 4 billion.
 - Solenoid / Switch test would "detect" self test switch hit on first solenoid. Fixed.
+
+
 
 ### Version 2024.12 by Dave's Think Tank
 
