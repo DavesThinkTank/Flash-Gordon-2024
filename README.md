@@ -2,9 +2,11 @@
 ## Version 2025.07
 ## for the Arduino Mega 2560 Rev3
 
-https://github.com/DavesThinkTank/Flash-Gordon-2024/releases/tag/v2025.07
+The latest release is available from the Flash-Gordon-2024 main page. Just click on the green <> Code button, and select Download ZIP. 
 
-NOTE!: Please check out the latest release at the link above. Subsequent releases have additional features. The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (07). If it doesn't, you have the wrong software or the wrong version!
+The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (07). If it doesn't, you have the wrong software or the wrong version! Also note that, sound files are included in a ZIP file on the main page.
+
+### About Flash Gordon 2024
 
 Re-imagined rules for Bally's 1981 Flash Gordon pinball machine. Implemented using the Retro Pin Upgrade (RPU), using a daughter card connected to the MPU's J5 connector. The card can be built yourself using instructions available online. The following website can help you with this: 
 https://www.pinballrefresh.com/retro-pin-upgrade-rpu
@@ -30,8 +32,8 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk . Or write some amazing code to
 
 ### To use this code
 
-* Under "Releases", click on "Latest".
-* Click on each file to download. 
+* Click on the green Code button
+* Select Download ZIP
 * Place all files in a folder named: FG2025p07
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
 * Find FG2025p07.ino in your FG2025p07 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
