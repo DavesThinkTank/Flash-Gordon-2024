@@ -52,12 +52,12 @@
 // These defines allow this configuration to eliminate some functions
 // to reduce program size
 #define RPU_OS_USE_DIP_SWITCHES 
-#define RPU_OS_USE_S_AND_T
-//#define RPU_OS_USE_DASH51
-//#define RPU_OS_USE_SB100
+//#define RPU_OS_USE_S_AND_T              // FLASH GORDON: Define exactly one of RPU_OS_USE_S_AND_T,
+//#define RPU_OS_USE_WAV_TRIGGER          // RPU_OS_USE_WAV_TRIGGER, or RPU_OS_USE_WAV_TRIGGER_1p3.
+#define RPU_OS_USE_WAV_TRIGGER_1p3        // Note that RPU_OS_USE_WAV_TRIGGER is only for older model WAV Triggers.
+//#define RPU_OS_USE_DASH51               // Note also that if you use a Geeteoh board, you should define RPU_OS_USE_S_AND_T.
+//#define RPU_OS_USE_SB100                // Note also that both WAV Trigger and Geeteoh boards require you to define USE_EXTENDED_SOUNDS in the main program.
 //#define RPU_OS_USE_SB300
-//#define RPU_OS_USE_WAV_TRIGGER
-//#define RPU_OS_USE_WAV_TRIGGER_1p3
 //#define RPU_OS_DISABLE_CPC_FOR_SPACE
 #define RPU_OS_USE_AUX_LAMPS
 #define RPU_OS_USE_7_DIGIT_DISPLAYS
@@ -166,8 +166,8 @@
 #define RPU_AWARD_SCORE_3_EEPROM_START_BYTE      26
 #define RPU_TOTAL_REPLAYS_EEPROM_START_BYTE      30
 #define RPU_TOTAL_HISCORE_BEATEN_START_BYTE      34
-#define RPU_CHUTE_2_COINS_START_BYTE             38
-#define RPU_CHUTE_1_COINS_START_BYTE             42
+#define RPU_CHUTE_1_COINS_START_BYTE             38
+#define RPU_CHUTE_2_COINS_START_BYTE             42
 #define RPU_CHUTE_3_COINS_START_BYTE             46
 #define RPU_TOTAL_SKILL_1_EEPROM_BYTE            50
 #define RPU_TOTAL_SKILL_2_EEPROM_BYTE            54
@@ -176,7 +176,7 @@
 #define RPU_TOTAL_WIZ_BEAT_EEPROM_BYTE           66
 #define RPU_PERSONAL_GOAL_EEPROM_START_BYTE      70
 #define RPU_DIP_BANK                             82
-// see also FG2024pxx.h #define RPU_xxx, currently up to 87
+// see also FG2024pxx.h #define RPU_xxx, currently up to 93
 
 
 #define RPU_CONFIG_H

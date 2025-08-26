@@ -54,12 +54,12 @@ Version 2025.01 by Dave's Think Tank
 #define MACHINE_STATE_TEST_TOTAL_PLAYS    -14
 #define MACHINE_STATE_TEST_TOTAL_REPLAYS  -15
 #define MACHINE_STATE_TEST_HISCR_BEAT     -16
-#define MACHINE_STATE_TEST_CHUTE_2_COINS  -17
-#define MACHINE_STATE_TEST_CHUTE_1_COINS  -18
-#define MACHINE_STATE_TEST_CHUTE_3_COINS  -19
+#define MACHINE_STATE_TEST_COIN_CHUTES    -17
 
-#define MACHINE_STATE_TEST_DONE           -19
+#define MACHINE_STATE_TEST_DONE           -17
 
 unsigned long GetLastSelfTestChangedTime();
 void SetLastSelfTestChangedTime(unsigned long setSelfTestChange);
 int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long CurrentTime, byte resetSwitch, byte otherSwitch, byte endSwitch);
+void EnterCoinChuteData(byte curSwitch,boolean resetDoubleClick, boolean resetBeingHeld, boolean curStateChanged, 
+                                          unsigned long CurrentTime, byte resetSwitch, byte otherSwitch, byte endSwitch);

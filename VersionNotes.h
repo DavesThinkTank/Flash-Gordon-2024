@@ -365,3 +365,37 @@ Bug Fixes:
     Will continue to watch - so far no issue.
 
 */
+/**************************************************************************
+
+Version 2025.08 by Dave's Think Tank
+
+Additions and changes in this version:
+
+- Added "Savior of the Universe" sound clip. Used when advancing to Final Battle (instead of Ming Laugh).
+- Increased speed of countdown bonus in cases where it precedes the Final Battle. Four times faster, so it does not slow down the action.
+- Modified ending of 15-second timer, so any other sounds end and end sound should always play. Changed end sound from voice to SFX, so it always plays immediately.
+
+Bug Fixes:
+
+
+*/
+/**************************************************************************
+
+Version 2025.09 by Dave's Think Tank
+
+Additions and changes in this version:
+
+- Adapted the sound output software to recognize WAV Trigger sound boards, in addition to Geeteoh and the original Squawk & Talk.
+- Reviewed every sound played to ensure they are all treated appropriately by each of Geeteoh, WAV Trigger, and S&T sound boards.
+- Displayed 3, 5, or 6 (W, S, or G) in Match window for four seconds when pinball turned on, to indicate sound outout to WAV Trigger, Squawk & Talk, or Geeteoh.
+- Added new debug mode 3 to scroll latest nine sounds played through displays 2, 3, and 4.
+- Changed all calls to sound 254 (This way Flash, come on!) to 4, which is the same sound, so all sounds are two-digit and debug mode 3 works better!
+- GeeteohTimings renamed SoundData and RPU_OS_USE_GEETEOH renamed USE_EXTENDED_SOUNDS, to better represent their purposes in the program. SoundData extended
+    to include length of original sound files used by the S&T.
+- I wanted to add six new self tests, where I already had 25! The only thing to be done was to combine several tests. First, I combined all three coin counts 
+    into a single test. This freed up two tests. I used the first of these to add ball save data, including number of ball saves, point limit, and 
+    time limit. The second is used to set volume levels on WAV Triggers for background, voices, and sound effects.
+
+
+
+*/

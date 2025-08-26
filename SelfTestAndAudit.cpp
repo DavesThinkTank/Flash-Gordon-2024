@@ -97,6 +97,10 @@ byte SoundToPlay = 0;
 boolean SolenoidCycle = true;
 boolean SolenoidOn = true;
 
+byte          dispNum = 0;
+int           UpDown = 1;
+
+
 
 int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long CurrentTime, byte resetSwitch, byte otherSwitch, byte endSwitch) {
   // Set resetSwitch to the game / credit button on the front of your pinball.
@@ -149,12 +153,10 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
   
   if (curSwitch==SW_SELF_TEST_SWITCH && (CurrentTime-LastSelfTestChange)>250) {
     returnState -= 1;
-//    if (returnState==MACHINE_STATE_TEST_DONE) returnState = MACHINE_STATE_ATTRACT;
     LastSelfTestChange = CurrentTime;
   }
 
   if (curStateChanged) {
-//    RPU_SetCoinLockout(false);
     
     for (int count=0; count<4; count++) {
       RPU_SetDisplay(count, 0);
@@ -285,7 +287,7 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
       RPU_PushToTimedSolenoidStack(1, 15, CurrentTime + 500, true); // SO_DTARGET_3_RESET
       RPU_PushToTimedSolenoidStack(2, 15, CurrentTime + 750, true); // SO_DTARGET_INLINE_RESET
     }
-} else if (curState==MACHINE_STATE_TEST_SWITCH_BOUNCE) { //                                                  *** Test for Switch Bounce ***
+  } else if (curState==MACHINE_STATE_TEST_SWITCH_BOUNCE) { //                                                *** Test for Switch Bounce ***
     if (curStateChanged) {
       RPU_TurnOffAllLamps();
       RPU_DisableSolenoidStack(); // switches will not activate solenoids!
@@ -328,7 +330,7 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
       RPU_SetDisplayCredits(0);
       RPU_SetDisplayBallInPlay(6);
       SolenoidCycle = true;
-      SoundToPlay = 6; // Start with sound 6. This jumps immediately to sound 7, avoiding the continuous background, then continues up.
+      SoundToPlay = 0; 
       // RPU_PlaySoundSquawkAndTalk(SoundToPlay);
       SoundPlaying = SoundToPlay;
       SoundPlayed = true;
@@ -366,6 +368,8 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
           RPU_PushToSoundStack(soundToPlay*256, 8);
         #elif defined (RPU_OS_USE_WTYPE_2_SOUND)
           RPU_PushToSoundStack(SoundToPlay, 8);
+        #elif defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
+          returnState = 10000 + SoundToPlay;          // Main program has all the info to play sounds using WAV Trigger!
         #endif
         
         SoundPlaying = SoundToPlay;
@@ -493,12 +497,8 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
     auditNumStartByte = RPU_TOTAL_REPLAYS_EEPROM_START_BYTE;
   } else if (curState==MACHINE_STATE_TEST_HISCR_BEAT) { //                                                *** Set High Scores Won ***
     auditNumStartByte = RPU_TOTAL_HISCORE_BEATEN_START_BYTE;
-  } else if (curState==MACHINE_STATE_TEST_CHUTE_2_COINS) { //                                             *** Set Chute 2 ***
-    auditNumStartByte = RPU_CHUTE_2_COINS_START_BYTE;
-  } else if (curState==MACHINE_STATE_TEST_CHUTE_1_COINS) { //                                             *** Set Chute 1 ***
-    auditNumStartByte = RPU_CHUTE_1_COINS_START_BYTE;
-  } else if (curState==MACHINE_STATE_TEST_CHUTE_3_COINS) { //                                             *** Set Chute 3 ***
-    auditNumStartByte = RPU_CHUTE_3_COINS_START_BYTE;    
+  } else if (curState==MACHINE_STATE_TEST_COIN_CHUTES) { //                                             *** Set Chute 2 ***
+    EnterCoinChuteData(curSwitch, resetDoubleClick, resetBeingHeld, curStateChanged, CurrentTime, resetSwitch, otherSwitch, endSwitch);
   } 
 
   if (savedScoreStartByte) {
@@ -555,6 +555,43 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
   
   return returnState;
 }
+
+// #################### ENTER BALL SAVE DATA USING DISPLAYS ####################
+void EnterCoinChuteData(byte curSwitch,boolean resetDoubleClick, boolean resetBeingHeld, boolean curStateChanged, 
+                                          unsigned long CurrentTime, byte resetSwitch, byte otherSwitch, byte endSwitch) {
+
+  if (curStateChanged) {
+    dispNum = 0;
+    LastSolTestTime = CurrentTime;
+    SavedValue = RPU_ReadULFromEEProm(RPU_CHUTE_1_COINS_START_BYTE);
+    RPU_SetDisplayFlash(0, SavedValue, CurrentTime, 250, 2);
+    SavedValue = RPU_ReadULFromEEProm(RPU_CHUTE_2_COINS_START_BYTE);
+    RPU_SetDisplay(1, SavedValue, true, 2);
+    SavedValue = RPU_ReadULFromEEProm(RPU_CHUTE_3_COINS_START_BYTE);
+    RPU_SetDisplay(2, SavedValue, true, 2);
+    }
+  SavedValue = RPU_ReadULFromEEProm(RPU_CHUTE_1_COINS_START_BYTE + dispNum * 4);
+  RPU_SetDisplayFlash(dispNum, SavedValue, CurrentTime, 250, 2);
+  if (curSwitch == otherSwitch) {
+    RPU_SetDisplay(dispNum, SavedValue, true, 2);
+    dispNum = (dispNum + 1) % 3;
+    SavedValue = RPU_ReadULFromEEProm(RPU_CHUTE_1_COINS_START_BYTE + dispNum * 4);
+    RPU_SetDisplayFlash(dispNum, SavedValue, CurrentTime, 250, 2);
+    } 
+    if (resetDoubleClick) {
+    SavedValue = 0;
+    RPU_SetDisplayFlash(dispNum, SavedValue, CurrentTime, 250, 2); 
+    RPU_WriteULToEEProm(RPU_CHUTE_1_COINS_START_BYTE + dispNum * 4, SavedValue);
+    }
+    if (curSwitch == resetSwitch || (ResetHold && CurrentTime > LastSolTestTime + 250)) {
+      SavedValue += 1;
+      LastSolTestTime = CurrentTime;
+      RPU_SetDisplayFlash(dispNum, SavedValue, CurrentTime, 250, 2); 
+      RPU_WriteULToEEProm(RPU_CHUTE_1_COINS_START_BYTE + dispNum * 4, SavedValue);
+    }
+}
+
+
 
 unsigned long GetLastSelfTestChangedTime() {
   return LastSelfTestChange;

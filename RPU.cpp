@@ -1692,7 +1692,7 @@ void RPU_SetDisplayBallInPlay(int value, boolean displayOn, boolean showBothDigi
 
   if (displayOn) {
     if (value>9 || showBothDigits) enableMask |= RPU_OS_MASK_SHIFT_1;
-    else enableMask |= 0x20;
+    else enableMask |= 0x40;
   }
 
   DisplayDigitEnable[4] = enableMask;

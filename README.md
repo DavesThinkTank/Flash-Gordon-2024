@@ -1,10 +1,10 @@
 # Flash Gordon 2024
-## Version 2025.07
+## Version 2025.09
 ## for the Arduino Mega 2560 Rev3
 
 The latest release is available from the Flash-Gordon-2024 main page. Just click on the green <> Code button, and select Download ZIP. 
 
-The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (07). If it doesn't, you have the wrong software or the wrong version! Also note that, sound files are included in a ZIP file on the main page.
+The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (09). If it doesn't, you have the wrong software or the wrong version! Also note that, sound files are included in a ZIP file on the main page.
 
 ### About Flash Gordon 2024
 
@@ -15,44 +15,67 @@ An easier option is to purchase a kit, or even a pre-built card. Both are availa
 https://pinside.com/pinball/market/shops/1304-roygbev-pinball/by-game/185-flash-gordon
 
 ### Important Notes!
-* This version is meant to be used with a Geeteoh sound board. If you are using an original Bally Squawk & Talk, or some board compatible with it, the sounds should work for the most part, but there may be some minor issues with sounds not playing under some circumstances. The best way to handle this is to comment out the definition of RPU_OS_USE_GEETEOH (add // at the beginning) in Operator Game Adjustments as follows:
-
-// #define BALLY_STERN_OS_USE_GEETEOH 
-
-Then re-compile the code to your Arduino. The very best way to handle this is to just buy a Geeteoh board already!
+* This version will work with any of the following sound boards: 
+    Geeteoh sound board,
+    WAV Trigger sound board, or 
+    the original Bally Squawk & Talk. 
 
 Even if you have a Geeteoh board, you may need the latest software update. This can be obtained at a reasonable price by contacting Geeteoh.com.
 
-* The sound files included are meant to be used in Geeteoh sound bank 6, but can be renamed for any other bank if needed. See your Geeteoh manual.
+* The Geeteoh sound files included are meant to be used in Geeteoh sound bank 6, but can be renamed for any other bank if needed. See your Geeteoh manual.
 * The sound files do not include any of the music from the movie, for copyright reasons. I used "In the Space Capsule" during the Skill Shot, "Flash's Theme" for regular game play, and "Battle Theme" during the final battle. All three are available from any music streaming service. I use instrumental versions, or edited out much of the dialog and sound effects, as the voices in the full songs tend to disrupt voices in the game. Just go to Google and search for "Flash Gordon Theme Instrumental" for an instrumental version of "Flash's Theme". There are several online, including several on YouTube. Create a wav file of sound only (no video) and name it 1785_0249_FlashsTheme.wav. You will also want to create two music files, 1707_0171_SpaceCapsule.wav and 1708_0172_BattleTheme.wav.
 
 * This version has the strobe light turned on. If you have no strobe it will make no difference to you. If you have an LED strobe you will be pleasantly surprised. If you have an original strobe, or an exact replacement, I don't know what will happen but it probably won't work well. You can recompile with USE_STROBE defined as 0 (see "Operator game adjustments" below), or just unplug the strobe. Or watch my video on how to build an LED strobe out of spare parts you probably have lying around the house:
 
 https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk . Or write some amazing code to handle an original strobe and let me know!
 
-### To use this code
+### To use this code (see the manual for complete, step-by-step instructions):
 
+* Go to https://github.com/DavesThinkTank/Flash-Gordon-2024 
 * Click on the green Code button
 * Select Download ZIP
-* Place all files in a folder named: FG2025p07
+* Place all files in a folder named: FG2025p09
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2025p07.ino in your FG2025p07 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2025p09.ino in your FG2025p09 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
-* Unzip the sound files and transfer them to the micro SD card on your Geeteoh, if you have one (if you don't have one, buy one!)
+* Unzip the sound files and transfer them to the micro SD card on your Geeteoh or WAV Trigger, if you have one.
 
 ### Operator game adjustments
-This section is at the top of the FG2025p07.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2025p09.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit (see below). Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
 
 ### How to operate self-test / audit / game settings
 - Inner coin door button: Enters self-test / audit mode and advances through sections
-- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-03manual.docx for a full explanation of the self-tests and game settings available.
+- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-09manual.docx for a full explanation of the self-tests and game settings available.
 - Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+### Version 2025.09 by Dave's Think Tank
+
+Additions and changes in this version:
+
+- Adapted the sound output software to recognize WAV Trigger sound boards, in addition to Geeteoh and the original Squawk & Talk.
+- Reviewed every sound played to ensure they are all treated appropriately by each of Geeteoh, WAV Trigger, and S&T sound boards.
+- Displayed 3, 5, or 6 (W, S, or G) in Match window for four seconds when pinball turned on, to indicate sound outout to WAV Trigger, Squawk & Talk, or Geeteoh.
+- Added new debug mode 3 to scroll latest nine sounds played through displays 2, 3, and 4.
+- Changed all calls to sound 254 (This way Flash, come on!) to 4, which is the same sound, so all sounds are two-digit and debug mode 3 works better!
+- GeeteohTimings renamed SoundData and RPU_OS_USE_GEETEOH renamed USE_EXTENDED_SOUNDS, to better represent their purposes in the program. SoundData extended
+    to include length of original sound files used by the S&T.
+- I wanted to add six new self tests, where I already had 25! The only thing to be done was to combine several tests. First, I combined all three coin counts 
+    into a single test. This freed up two tests. I used the first of these to add ball save data, including number of ball saves, point limit, and 
+    time limit. The second is used to set volume levels on WAV Triggers for background, voices, and sound effects.
+
+### Version 2025.08 by Dave's Think Tank
+
+Additions and changes in this version:
+
+- Added "Savior of the Universe" sound clip. Used when advancing to Final Battle (instead of Ming Laugh).
+- Increased speed of countdown bonus in cases where it precedes the Final Battle. Four times faster, so it does not slow down the action.
+- Modified ending of 15-second timer, so any other sounds end and end sound should always play. Changed end sound from voice to SFX, so it always plays immediately.
+
 ### Version 2025.07 by Dave's Think Tank
 
 Additions and changes in this version:
