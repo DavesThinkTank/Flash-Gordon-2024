@@ -6,6 +6,8 @@ The latest release is available from the Flash-Gordon-2024 main page. Just click
 
 The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (09). If it doesn't, you have the wrong software or the wrong version! Also note that, sound files are included in a ZIP file on the main page.
 
+During these four seconds you should also see a 3, 6, or 5 (W, G, or S) in the Match window, indicating the software is set up for a WAV Trigger, Geeteoh, or Squawk & Talk. If it is set up for the wrong sound card, there is a simple change you can make. Check out the section titled “Selecting Your Sound Board” in the manual to find out how.
+
 ### About Flash Gordon 2024
 
 Re-imagined rules for Bally's 1981 Flash Gordon pinball machine. Implemented using the Retro Pin Upgrade (RPU), using a daughter card connected to the MPU's J5 connector. The card can be built yourself using instructions available online. The following website can help you with this: 
@@ -313,3 +315,4 @@ Additions and changes in this version:
 - Added total replays to self-test / audit
 - Added score award thresholds to give credits that are adjustable in machine self-test / audit
 - Added current credits that are adjustable in machine self-test / audit
+
