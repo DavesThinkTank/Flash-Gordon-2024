@@ -1,12 +1,12 @@
 # Flash Gordon 2024
-## Version 2025.09
+## Version 2025.10
 ## for the Arduino Mega 2560 Rev3
 
 The latest release is available from the Flash-Gordon-2024 main page. Just click on the green <> Code button, and select Download ZIP. 
 
-The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (09). If it doesn't, you have the wrong software or the wrong version! Also note that, sound files are included in a ZIP file on the main page.
+The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (10). If it doesn't, you have the wrong software or the wrong version! 
 
-During these four seconds you should also see a 3, 6, or 5 (W, G, or S) in the Match window, indicating the software is set up for a WAV Trigger, Geeteoh, or Squawk & Talk. If it is set up for the wrong sound card, there is a simple change you can make. Check out the section titled “Selecting Your Sound Board” in the manual to find out how.
+During these four seconds you should also see a 3, 6, or 5 (W, G, or S) in the Match window, indicating the software is set up for a WAV Trigger, Geeteoh, or Squawk & Talk. If it is set up for the wrong sound card, there is a simple change you can make. Check out the section titled “Selecting Your Sound Board” in the manual to find out how. Also note that, sound files are included in a ZIP file on the main page.
 
 ### About Flash Gordon 2024
 
@@ -27,34 +27,61 @@ Even if you have a Geeteoh board, you may need the latest software update. This 
 * The Geeteoh sound files included are meant to be used in Geeteoh sound bank 6, but can be renamed for any other bank if needed. See your Geeteoh manual.
 * The sound files do not include any of the music from the movie, for copyright reasons. I used "In the Space Capsule" during the Skill Shot, "Flash's Theme" for regular game play, and "Battle Theme" during the final battle. All three are available from any music streaming service. I use instrumental versions, or edited out much of the dialog and sound effects, as the voices in the full songs tend to disrupt voices in the game. Just go to Google and search for "Flash Gordon Theme Instrumental" for an instrumental version of "Flash's Theme". There are several online, including several on YouTube. Create a wav file of sound only (no video) and name it 1785_0249_FlashsTheme.wav. You will also want to create two music files, 1707_0171_SpaceCapsule.wav and 1708_0172_BattleTheme.wav.
 
-* This version has the strobe light turned on. If you have no strobe it will make no difference to you. If you have an LED strobe you will be pleasantly surprised. If you have an original strobe, or an exact replacement, I don't know what will happen but it probably won't work well. You can recompile with USE_STROBE defined as 0 (see "Operator game adjustments" below), or just unplug the strobe. Or watch my video on how to build an LED strobe out of spare parts you probably have lying around the house:
+* If you have a strobe light, you will need to go into the "Operator game Adjustments" (more info below) to identify the type of strobe. If you don't have a strobe, watch my video on how to build an LED strobe out of spare parts you probably have lying around the house:
 
-https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk . Or write some amazing code to handle an original strobe and let me know!
+https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk .
 
 ### To use this code (see the manual for complete, step-by-step instructions):
 
 * Go to https://github.com/DavesThinkTank/Flash-Gordon-2024 
 * Click on the green Code button
 * Select Download ZIP
-* Place all files in a folder named: FG2025p09
+* Place all files in a folder named: FG2025p10
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2025p09.ino in your FG2025p09 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2025p10.ino in your FG2025p10 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh or WAV Trigger, if you have one.
 
 ### Operator game adjustments
-This section is at the top of the FG2025p09.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2025p10.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
-Score award thresholds and other game settings can be set in self-test / audit (see below). Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
+Score award thresholds and other game settings can be set in self-test / audit. Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
 
 ### How to operate self-test / audit / game settings
 - Inner coin door button: Enters self-test / audit mode and advances through sections
-- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-09manual.docx for a full explanation of the self-tests and game settings available.
+- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-10manual.docx for a full explanation of the self-tests and game settings available.
 - Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+### Version 2025.10 by Dave's Think Tank
+
+Additions and changes in this version:
+- The code for the strobe light has been rewritten to accomodate any of the following five types of strobe. Set RPU_STROBE_TYPE in RPU_Config.h (down about 90 lines):
+      0 = Strobe signal always off
+      1 = Strobe signal always on
+      2 = Original xenon tube strobe
+      3 = Incandescent / LED light(s)
+      4 = Incandescent / LED light(s) with inverted on/off signal
+  If you set it to 2, you get the original game's strobe effect, which was 4 flashes at the start of a game, and 5 in the up/down kicker.
+  Setting it to 3 or 4 gives you a variety of effects, coordinated with the other lights in the backbox.
+  - The strobe was not being used in light patterns during normal game play. It now runs throughout for options 3 and 4.
+  - Coin lockout and the K1 flipper relay have been added to the solenoid self-tests.
+  - Flippers are now turned on during the switch self-test, to allow testing of flippers.
+  - Skill shot bonus score is now displayed in the credit window, and flashes when you are awarded points until normal play begins.
+  - The ball sometimes bounces back into the saucer repeatedly, saying "Escape is impossible" over and over again, which can get tedious! So I
+    set it up with two random quotes for up, and two different random quotes for down, so it will never say the same thing twice again! This 
+    also makes use of some quotes that were unused, or under-used.
+  - The operator game adjustment STOP_THE_MUSIC has been modified. It can now be used to turn the background music off, and then back on, during a game.
+  - The 2021 code made several calls to the function RPU_DataRead() throughout the program. This function is meant to be called once per loop, and I could see no
+    good reason for all the others. All but the one in the function loop() have been deleted.
+  - The function RPU_SetLampState() allows you to dim the lamps. Four levels are available; 0 (full brightness), 1, 2, or 3. I was unsure if this worked on LEDs
+    and so I wrote a test program. Level 1 is good, but levels 2 and 3 are just a flickering mess! Some of the 2021 code uses these dimming levels, and so I 
+    modified the function to ensure the dimming level never exceeds 1 for LEDs. LED or incendescent lights are now specified by defining or not defining the 
+    variable RPU_USE_LED in RPU_Config.h (down about 80 lines).
+
+
 ### Version 2025.09 by Dave's Think Tank
 
 Additions and changes in this version:
@@ -85,7 +112,7 @@ Additions and changes in this version:
 Bug Fixes:
 
 - Replaced PlaySound() and PlayQueue() functions with functions written for the Bally Star Trek. These allow up to 20 voices to be stored in the queue, rather than
-    just 1. The programming is tighter as well, hopefully leading to a solution for the double-background sounds mentioned in 2025.03 above. 
+    just 1. The programming is tighter as well, hopefully leading to a solution for the double-background sounds mentioned in 2025.03 below. 
     Added code to ensure a minimum time allowed for Geeteoh to deal with each sound - currently 25 ms. Hopefully this ensures all sounds and other commands played.
     Will continue to watch - so far no issue.
     
@@ -315,4 +342,3 @@ Additions and changes in this version:
 - Added total replays to self-test / audit
 - Added score award thresholds to give credits that are adjustable in machine self-test / audit
 - Added current credits that are adjustable in machine self-test / audit
-

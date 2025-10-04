@@ -396,6 +396,36 @@ Additions and changes in this version:
     into a single test. This freed up two tests. I used the first of these to add ball save data, including number of ball saves, point limit, and 
     time limit. The second is used to set volume levels on WAV Triggers for background, voices, and sound effects.
 
+*/
+
+
+/**************************************************************************
+
+Version 2025.10 by Dave's Think Tank
+
+Additions and changes in this version:
+- The code for the strobe light has been rewritten to accomodate any of the following five types of strobe. Set RPU_STROBE_TYPE in RPU_Config.h (down about 90 lines):
+      0 = Strobe signal always off
+      1 = Strobe signal always on
+      2 = Original xenon tube strobe
+      3 = Incandescent / LED light(s)
+      4 = Incandescent / LED light(s) with inverted on/off signal
+  If you set it to 2, you get the original game's strobe effect, which was 4 flashes at the start of a game, and 5 in the up/down kicker.
+  Setting it to 3 or 4 gives you a variety of effects, coordinated with the other lights in the backbox.
+  - The strobe was not being used in light patterns during normal game play. It now runs throughout for options 3 and 4.
+  - Coin lockout and the K1 flipper relay have been added to the solenoid self-tests.
+  - Flippers are now turned on during the switch self-test, to allow testing of flippers.
+  - Skill shot bonus score is now displayed in the credit window, and flashes when you are awarded points until normal play begins.
+  - The ball sometimes bounces back into the saucer repeatedly, saying "Escape is impossible" over and over again, which can get tedious! So I
+    set it up with two random quotes for up, and two different random quotes for down, so it will never say the same thing twice again! This 
+    also makes use of some quotes that were unused, or under-used.
+  - The operator game adjustment STOP_THE_MUSIC has been modified. It can now be used to turn the background music off, and then back on, during a game.
+  - The 2021 code made several calls to the function RPU_DataRead() throughout the program. This function is meant to be called once per loop, and I could see no
+    good reason for all the others. All but the one in the function loop() have been deleted.
+  - The function RPU_SetLampState() allows you to dim the lamps. Four levels are available; 0 (full brightness), 1, 2, or 3. I was unsure if this worked on LEDs
+    and so I wrote a test program. Level 1 is good, but levels 2 and 3 are just a flickering mess! Some of the 2021 code uses these dimming levels, and so I 
+    modified the function to ensure the dimming level never exceeds 1 for LEDs. LED or incendescent lights are now specified by defining or not defining the 
+    variable RPU_USE_LED in RPU_Config.h (down about 80 lines).
 
 
 */

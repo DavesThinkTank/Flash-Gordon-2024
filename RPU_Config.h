@@ -16,6 +16,12 @@
     GNU General Public License for more details.
 
     See <https://www.gnu.org/licenses/>.
+
+    Version 2025.10 by Dave's Think Tank
+
+    - Added RPU_USE_LED to control dimming of LED lamps
+    - Added RPU_STROBE_LAMP and RPU_STROBE_TYPE to control use of xenon strobe lamps and their replacements
+    - Added RPU_COIN_LOCKOUT and RPU_FLIPPER_ENABLE; used in solenoid self-test
  */
 
 #ifndef RPU_CONFIG_H
@@ -69,6 +75,22 @@
 
 
 #define RPU_OS_USE_6_DIGIT_CREDIT_DISPLAY_WITH_7_DIGIT_DISPLAYS
+
+// Definitions added by Dave's Think Tank:
+// Pinball uses LED lamps rather than incendescent. Comment out for incandescent.
+#define RPU_USE_LED
+// Identify xenon strobe lamp (e.g. Flash Gordon). Comment out if no such lamp.
+#define RPU_STROBE_LAMP 75
+// Identify strobe type:
+//     0 = Strobe signal always off
+//     1 = Strobe signal always on
+//     2 = Original xenon tube strobe
+//     3 = Incandescent / LED light(s)
+//     4 = Incandescent / LED light(s) with inverted signal
+#define RPU_STROBE_TYPE  3
+// Coin lockout and K1 relay handled differently than other solenoids
+#define RPU_COIN_LOCKOUT             15 // COIN LOCKOUT DOOR
+#define RPU_FLIPPER_ENABLE           16 // K1 RELAY (FLIPPER ENABLE) (Also used as the maximum solenoid number)
 
 
 

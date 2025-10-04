@@ -59,6 +59,14 @@ Version 2025.01 by Dave's Think Tank
   - Removed references to RPU_OS_USE_GEETEOH (BSOS_OS_USE_GEETEOH). RPU_OS_USE_GEETEOH is now defined in FGyyyypmm.ino as a user definition, where it belongs.
   - Solenoid / Switch test would "detect" self test switch hit on first solenoid. Fixed.
 
+Version 2025.09 by Dave's Think Tank
+
+  - Combined all three coin counts into a single test
+
+Version 2025.10 by Dave's Think Tank
+
+  - Added control over strobe lights
+  - Added coin lockout and K1 flipper enable to solenoid test
  */
 
 #include <Arduino.h>
@@ -96,9 +104,12 @@ byte SoundPlaying = 0;
 byte SoundToPlay = 0;
 boolean SolenoidCycle = true;
 boolean SolenoidOn = true;
+boolean coinLockoutOn;
+boolean flippersOn;
 
 byte          dispNum = 0;
 int           UpDown = 1;
+
 
 
 
@@ -177,7 +188,11 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
       RPU_SetDisplayBallInPlay(1);
       RPU_TurnOffAllLamps();
       for (int count=0; count<RPU_MAX_LAMPS; count++) {
+        #ifdef RPU_STROBE_LAMP
+        if (count != RPU_STROBE_LAMP || RPU_STROBE_TYPE >= 3) RPU_SetLampState(count, 1, 0, 500);
+        #else
         RPU_SetLampState(count, 1, 0, 500);
+        #endif
       }
       CurValue = 99;
       RPU_SetDisplay(0, CurValue, true);
@@ -190,11 +205,22 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
       if (CurValue==RPU_MAX_LAMPS) {
         CurValue = 99;
         for (int count=0; count<RPU_MAX_LAMPS; count++) {
+          #ifdef RPU_STROBE_LAMP
+          if (count != RPU_STROBE_LAMP || RPU_STROBE_TYPE >= 3) RPU_SetLampState(count, 1, 0, 500);
+          #else
           RPU_SetLampState(count, 1, 0, 500);
+          #endif
         }
       } else {
         RPU_TurnOffAllLamps();
-        RPU_SetLampState(CurValue, 1, 0, 0);
+        #ifdef RPU_STROBE_LAMP
+        if (CurValue != RPU_STROBE_LAMP || RPU_STROBE_TYPE != 2) 
+          RPU_SetLampState(CurValue, 1, 0, 0);
+        else
+          RPU_SetLampState(CurValue, 0, 0, 500);
+        #else
+          RPU_SetLampState(CurValue, 1, 0, 0);
+        #endif
       }      
       RPU_SetDisplay(0, CurValue, true);  
     }    
@@ -225,7 +251,8 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
       LastSolTestTime = CurrentTime;
       SolSwitchTimer = CurrentTime;
       RPU_EnableSolenoidStack(); 
-      RPU_SetDisableFlippers(false);
+      RPU_SetDisableFlippers(flippersOn = true);
+      RPU_SetCoinLockout(coinLockoutOn = true);
       RPU_SetDisplayBlank(4, 0);
       RPU_SetDisplayBallInPlay(3);
       SolenoidCycle = true;
@@ -247,12 +274,19 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
     if ((CurrentTime-LastSolTestTime)>1000) {
       if (SolenoidCycle) {
         SavedValue += 1;
-        if (SavedValue>14) SavedValue = 0;
+        if (SavedValue > RPU_FLIPPER_ENABLE) SavedValue = 0;           // RPU_FLIPPER_ENABLE is the highest solenoid
       }
       if (SolenoidOn) {
-        RPU_PushToSolenoidStack(SavedValue, 5);
         SolSwitchTimer = CurrentTime;
-      }
+
+        if (SavedValue == RPU_COIN_LOCKOUT)                            // Test coin lockout
+          RPU_SetCoinLockout(coinLockoutOn = !coinLockoutOn);
+        else if (SavedValue == RPU_FLIPPER_ENABLE)                     // Test flipper enable
+          RPU_SetDisableFlippers(flippersOn = !flippersOn);
+        else
+          RPU_PushToSolenoidStack(SavedValue, 5);
+        }
+
       RPU_SetDisplay(0, SavedValue, true);
       LastSolTestTime = CurrentTime;
     }
@@ -261,7 +295,7 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
     if (curStateChanged) {
       RPU_TurnOffAllLamps();
       RPU_DisableSolenoidStack(); // switches will not activate solenoids!
-      RPU_SetDisableFlippers(true);
+      RPU_SetDisableFlippers(false);
       RPU_SetDisplayCredits(0);
       RPU_SetDisplayBallInPlay(4);
     }
@@ -556,7 +590,7 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
   return returnState;
 }
 
-// #################### ENTER BALL SAVE DATA USING DISPLAYS ####################
+// #################### ENTER COIN CHUTE DATA USING DISPLAYS ####################
 void EnterCoinChuteData(byte curSwitch,boolean resetDoubleClick, boolean resetBeingHeld, boolean curStateChanged, 
                                           unsigned long CurrentTime, byte resetSwitch, byte otherSwitch, byte endSwitch) {
 

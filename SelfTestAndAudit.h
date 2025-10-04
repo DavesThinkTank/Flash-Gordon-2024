@@ -22,19 +22,22 @@
 
     - Minor changes to ensure appropriate function in a Flash Gordon.
 
-     Version 2024.08 by Dave's Think Tank
+    Version 2024.08 by Dave's Think Tank
 
-  - Added otherSwitch as a secondary input to self-tests. Changed slamSwitch to endSwitch.
-  - DIP Switch Test: Added a test for DIP switches (-6). 
+    - Added otherSwitch as a secondary input to self-tests. Changed slamSwitch to endSwitch.
+    - DIP Switch Test: Added a test for DIP switches (-6). 
 
     Version 2024.12 by Dave's Think Tank
 
     - Cleaned up code by removing old, unused CPC (coins per credit) code, unused GetAwardScore() function definition.
 
-Version 2025.01 by Dave's Think Tank
+    Version 2025.01 by Dave's Think Tank
 
     - Added test for switch bounce (-5), in addition to stuck switches (-4).
 
+    Version 2025.09 by Dave's Think Tank
+
+    - Combined all three coin counts into a single test
  */
 
 // Self-Test Machine States (See also FGyyyypmm.h)

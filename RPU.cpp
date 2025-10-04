@@ -21,6 +21,15 @@
 
     - Wrote three functions to allow flashing of a single digit: RPU_SetDigitFlash, RPU_SetDigitFlashCredits, and RPU_SetDigitFlashBallInPlay.
     - RPU_ReadByteFromEEProm sets value to zero if it equals 255! Removed, allowing byte = 255.
+
+    Version 2025.10 by Dave's Think Tank
+
+    - Revised to allow the function RPU_SetLampState() to control strobe lamps (e.g., Flash Gordon). The variables RPU_STROBE_LAMP and RPU_STROBE_TYPE must be
+      set in RPU_Config.h.
+    - The function RPU_SetLampState() allows you to dim the lamps. Four levels are available: 0 (full brightness), 1, 2, or 3. Testing has shown that levels 2 
+      and 3 do not work well with LED lamps. The function has been modified to ensure the dimming level never exceeds 1 for LEDs. LED or incendescent lights 
+      are now specified by defining or not defining the variable RPU_USE_LED in RPU_Config.h (down about 80 lines).
+    - Fixed RPU_SetDisplayFlashCredits() to flash correct two digits.
  */
 
 
@@ -43,6 +52,8 @@
  *   RPU_Config.h file. 
  */
 #include "RPU_Config.h"
+
+
 
 
 /******************************************************
@@ -1833,9 +1844,9 @@ void RPU_SetDisplayFlash(int displayNumber, unsigned long value, unsigned long c
 void RPU_SetDisplayFlashCredits(unsigned long curTime, int period) {
   if (period) {
     if ((curTime/period)%2) {
-      DisplayDigitEnable[4] |= 0x06;
+      DisplayDigitEnable[4] |= RPU_OS_MASK_SHIFT_2; // Mask for credit display
     } else {
-      DisplayDigitEnable[4] &= 0x39;
+      DisplayDigitEnable[4] &= RPU_OS_MASK_SHIFT_1; // Mask for ball-in-play display
     }
   }
 }
@@ -1934,7 +1945,28 @@ void RPU_SetDimDivisor(byte level, byte divisor) {
 byte BitShiftValues[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
 
 void RPU_SetLampState(int lampNum, byte s_lampState, byte s_lampDim, int s_lampFlashPeriod) {
-  if (lampNum>=RPU_MAX_LAMPS || lampNum<0) return;
+  if (lampNum >= RPU_MAX_LAMPS || lampNum<0) return;
+
+  #ifdef RPU_USE_LED
+  s_lampDim = min(s_lampDim, 1); // dimming of LEDs works very poorly for levels 2 and 3
+  #endif
+
+  #ifdef RPU_STROBE_LAMP
+  if (lampNum == RPU_STROBE_LAMP) {
+    if (RPU_STROBE_TYPE <= 1) {
+      s_lampState = RPU_STROBE_TYPE; // Always off, or always on. No dimming, no strobing.
+      s_lampDim = 0;
+      s_lampFlashPeriod = 0;
+    }
+    else if (RPU_STROBE_TYPE == 2) { // Xenon strobe lamps have on/off reversed. No dimming.
+      s_lampState = !s_lampState;
+      s_lampDim = 0;
+    }
+    else if (RPU_STROBE_TYPE == 4 && s_lampFlashPeriod == 0) // Reverse on/off signal, unless it is flashing. If flashing with other lamps, the signal must flash together.
+      s_lampState = !s_lampState; 
+  }
+  #endif
+
   byte lampRow = lampNum%8;
   byte lampCol = lampNum/8;
   byte lampBit = BitShiftValues[lampRow];
@@ -3845,5 +3877,3 @@ void RPU_ClearSwitches() {
     SwitchesNow[switchCount] = 0xFF;
   }
 }
-
-
