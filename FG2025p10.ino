@@ -48,6 +48,11 @@ Bally Flash Gordon: Arduino Version 2025.03 by Dave's Think Tank
 
 #define USE_EXTENDED_SOUNDS            // If defined, program expects a Geeteoh or WAV Trigger sound board to play an extended list of pre-programmed sound files.
 
+// SELECTING STROBE TYPE!!!
+// If you have a strobe lamp in your backbox, You need to tell the program what type it is.
+// Go to RPU_Config.h. Find RPU_STROBE_TYPE (down about 90 lines), and follow the instrucions you find there.
+// You can find more information in the manual.
+
 //=========================================================================================================
 
 #include "RPU_Config.h"
