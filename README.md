@@ -59,12 +59,14 @@ Score award thresholds and other game settings can be set in self-test / audit. 
 
 Additions and changes in this version:
 - The code for the strobe light has been rewritten to accomodate any of the following five types of strobe. Set RPU_STROBE_TYPE in RPU_Config.h (down about 90 lines):
+
       0 = Strobe signal always off
       1 = Strobe signal always on
       2 = Original xenon tube strobe
       3 = Incandescent / LED light(s)
       4 = Incandescent / LED light(s) with inverted on/off signal
-  If you set it to 2, you get the original game's strobe effect, which was 4 flashes at the start of a game, and 5 in the up/down kicker.
+  
+    If you set it to 2, you get the original game's strobe effect, which was 4 flashes at the start of a game, and 5 in the up/down kicker.
   Setting it to 3 or 4 gives you a variety of effects, coordinated with the other lights in the backbox.
   - The strobe was not being used in light patterns during normal game play. It now runs throughout for options 3 and 4.
   - Coin lockout and the K1 flipper relay have been added to the solenoid self-tests.
@@ -342,3 +344,4 @@ Additions and changes in this version:
 - Added total replays to self-test / audit
 - Added score award thresholds to give credits that are adjustable in machine self-test / audit
 - Added current credits that are adjustable in machine self-test / audit
+
