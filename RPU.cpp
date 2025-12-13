@@ -17,12 +17,12 @@
 
     See <https://www.gnu.org/licenses/>.
 
-    Version 2025.01 by Dave's Think Tank
+    Version FG2025.01 by Dave's Think Tank
 
     - Wrote three functions to allow flashing of a single digit: RPU_SetDigitFlash, RPU_SetDigitFlashCredits, and RPU_SetDigitFlashBallInPlay.
     - RPU_ReadByteFromEEProm sets value to zero if it equals 255! Removed, allowing byte = 255.
 
-    Version 2025.10 by Dave's Think Tank
+    Version FG2025.10 by Dave's Think Tank
 
     - Revised to allow the function RPU_SetLampState() to control strobe lamps (e.g., Flash Gordon). The variables RPU_STROBE_LAMP and RPU_STROBE_TYPE must be
       set in RPU_Config.h.
@@ -30,10 +30,14 @@
       and 3 do not work well with LED lamps. The function has been modified to ensure the dimming level never exceeds 1 for LEDs. LED or incendescent lights 
       are now specified by defining or not defining the variable RPU_USE_LED in RPU_Config.h (down about 80 lines).
     - Fixed RPU_SetDisplayFlashCredits() to flash correct two digits.
+
+    Version ST2025.10 by Dave's Think Tank
+
+    - Added blankByMagnitude and minDigits to RPU_SetDigitFlash() (one of my subroutines at the bottom).
+    - Added RPU_SwitchCount() to return number of switches in stack, as part of effort to avoid an error where all switches fire at once
+
  */
 
-
- 
 #include <Arduino.h>
 #include <EEPROM.h>
 #define RPU_CPP_FILE
@@ -483,7 +487,13 @@ void RPU_DataWrite(int address, byte data) {
   PORTC = (PORTC & 0x3F) | ((address & 0x4000)>>7) | ((address & 0x8000)>>9); // A14-A15
 
   // Wait for a falling edge of the clock
-  while((PINE & 0x20));
+  // while((PINE & 0x20));
+  // Replaced with the following:
+
+  // Wait until clock is high and then
+  // move on after falling edge
+  while (!(PINE & 0x20));
+  while ( (PINE & 0x20));
 
   // Pulse VMA over one clock cycle
   // Set VMA ON
@@ -3822,15 +3832,23 @@ unsigned long RPU_InitializeMPU(unsigned long initOptions, byte creditResetSwitc
 /********************************** Addons from Dave's Think Tank **********************************/
 
 // Dave's Think Tank - Set a single digit to flash
-void RPU_SetDigitFlash(int displayNumber, int digitNumber, unsigned long value, unsigned long curTime, int period) {
-  // A period of zero toggles display every other time
+void RPU_SetDigitFlash(int displayNumber, int digitNumber, unsigned long value, unsigned long curTime, int period, boolean blankByMagnitude, byte minDigits) {
+
+  if (minDigits < digitNumber + 1) minDigits = digitNumber + 1;
+  byte blank = 0;
+
+  for (int count=0; count<RPU_OS_NUM_DIGITS; count++) {
+    blank = blank * 2;
+    if (value!=0 || count<minDigits || !blankByMagnitude) blank |= 1;
+    value /= 10;
+  }
+
   if (period) {
     if ((curTime/period)%2) {
-      DisplayDigitEnable[displayNumber] = 127;
+      DisplayDigitEnable[displayNumber] = blank;
     } else {
-      DisplayDigitEnable[displayNumber] = 127 - (64 >> digitNumber);
+      DisplayDigitEnable[displayNumber] = blank - (1 << (RPU_OS_NUM_DIGITS - 1) >> digitNumber);
     }
-    // BSOS_SetDisplay(displayNumber, value, false, 7);
   }
 }
 
@@ -3860,20 +3878,22 @@ void RPU_SetDigitFlashBallInPlay(int digit, unsigned long curTime, int period) {
 
 // Dave's Think Tank - Clear the switch stack
 void RPU_ClearSwitches() {
-  // Reset solenoid stack
-  SolenoidStackFirst = 0;
-  SolenoidStackLast = 0;
-
   // Reset switch stack
   SwitchStackFirst = 0;
   SwitchStackLast = 0;
+  
+  // Replace bad switch byte reads with most recent good reads
+  for (byte switchCount = 0; switchCount < NUM_SWITCH_BYTES; switchCount++)
+    SwitchesNow[switchCount] = SwitchesMinus1[switchCount];
+  
+  // Reset solenoid stack, to stop immediate solenoids triggered by erroneous switches.
+  SolenoidStackFirst = 0;
+  SolenoidStackLast = 0;
+}
 
-  // Reset all the switch values 
-  // (set them as closed so that if they're stuck they don't register as new events)
-  byte switchCount;
-  for (switchCount=0; switchCount<NUM_SWITCH_BYTES; switchCount++) {
-    SwitchesMinus2[switchCount] = 0xFF;
-    SwitchesMinus1[switchCount] = 0xFF;
-    SwitchesNow[switchCount] = 0xFF;
-  }
+// Dave's Think Tank - Return count of switches in stack
+byte RPU_SwitchCount() {
+  if (SwitchStackLast >= SwitchStackFirst) 
+    return (SwitchStackLast - SwitchStackFirst);
+  return (SWITCH_STACK_SIZE + SwitchStackLast - SwitchStackFirst);
 }

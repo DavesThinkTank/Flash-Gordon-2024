@@ -18,55 +18,64 @@
     See <https://www.gnu.org/licenses/>.
 
 
-  Version 2024.04 by Dave's Think Tank
+  Version FG2024.04 by Dave's Think Tank
 
   - Features were added to the Self-Test function:
   - Sound test, changed to allow cycling through all sounds. Features using game button allow skipping sounds, repeating sounds, fast forward through sounds.
   - Added options in self test for all accounting values to be increased, as well as zeroed.
 
-  Version 2024.07 by Dave's Think Tank
+  Version FG2024.07 by Dave's Think Tank
 
   - Switch Test: Added count of switches set to "On", in credit display.
   - Switch Test: Double-click on credit button resets all drop targets. FLASH GORDON SPECIFIC CODE!
   - These changes to switch test allow a user to impliment a switch-matrix test, by setting multiple switches and looking for incorrect totals.
 
-  Version 2024.08 by Dave's Think Tank
+  Version FG2024.08 by Dave's Think Tank
 
   - Self-test modification: Added use of slam switch to end self-test. Added otherSwitch as a secondary input to self-tests.
   - DIP Switch Test: Added a test for DIP switches. Dip switch banks are displayed in binary (7 digits per display, plus one in ball-in-play or credit window.) 
   - DIP switches can be temporarily changed in game, using otherSwitch (described above).
 
-  Version 2024.09 by Dave's Think Tank
+  Version FG2024.09 by Dave's Think Tank
 
   - Added "Reset Hold" feature to tests for lights, displays, and DIP switches. Reset Hold scrolls quickly through the display / review options.
   - Reset Hold option on audit settings sped up considerably.
   - Solenoids can be made to stop firing during solenoid test by pressing otherSwitch (Coin slot 3 switch).
   - endSwitch fixed so that it will register as a switch in switch test, and NOT end self-test mode.
 
-  Version 2024.11 by Dave's Think Tank
+  Version FG2024.11 by Dave's Think Tank
 
   - Added monitoring of switches to solenoid test, to warn if vibration from a solenoid is setting off a switch
 
-Version 2024.12 by Dave's Think Tank
+Version FG2024.12 by Dave's Think Tank
 
   - When the solenoid test identifies a switch set off by vibration, it will also note the time in milliseconds between the solenoid firing and the switch activating
   - Cleaned up code by removing old, unused CPC (coins per credit) code.
 
-Version 2025.01 by Dave's Think Tank
+Version FG2025.01 by Dave's Think Tank
 
   - New double-hit switch bounce test added, in addition to the stuck switch / switch matrix test.
   - Converted from BSOS (Bally/Stern Operating System) to RPU (Retro Pin Upgrade). RPU is an extension of BSOS. BSOS is no longer maintained.
   - Removed references to RPU_OS_USE_GEETEOH (BSOS_OS_USE_GEETEOH). RPU_OS_USE_GEETEOH is now defined in FGyyyypmm.ino as a user definition, where it belongs.
   - Solenoid / Switch test would "detect" self test switch hit on first solenoid. Fixed.
 
-Version 2025.09 by Dave's Think Tank
+Version ST2025.06 by Dave's Think Tank
+
+- Lamp self-test has been extended to include six light shows from the game.
+
+
+Version FG2025.09 by Dave's Think Tank
 
   - Combined all three coin counts into a single test
 
-Version 2025.10 by Dave's Think Tank
+Version FG2025.10 by Dave's Think Tank
 
   - Added control over strobe lights
   - Added coin lockout and K1 flipper enable to solenoid test
+
+Version ST2025.10 by Dave's Think Tank
+
+- Added ability to modify score values one digit at a time.
  */
 
 #include <Arduino.h>
@@ -83,6 +92,7 @@ unsigned long DisplayDIP[6];
 unsigned long LastSolTestTime = 0; 
 unsigned long LastSelfTestChange = 0;
 unsigned long SavedValue = 0;
+unsigned long xValue = 0;
 unsigned long SolSwitchTimer = 0;
 unsigned long ResetHold = 0;
 unsigned long otherHold = 0;
@@ -90,6 +100,7 @@ unsigned long NextSpeedyValueChange = 0;
 unsigned long NumSpeedyChanges = 0;
 unsigned long LastResetPress = 0;
 unsigned long LastOtherPress = 0;
+unsigned long TensVal = 1;
 
 unsigned long SwitchTimer = 0;
 byte HoldSwitch = SW_SELF_TEST_SWITCH;
@@ -102,6 +113,7 @@ byte xDisplay = 0;
 boolean SoundPlayed = false;
 byte SoundPlaying = 0;
 byte SoundToPlay = 0;
+byte LightShow = 0;
 boolean SolenoidCycle = true;
 boolean SolenoidOn = true;
 boolean coinLockoutOn;
@@ -197,8 +209,31 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
       CurValue = 99;
       RPU_SetDisplay(0, CurValue, true);
       LastSolTestTime = CurrentTime;
+      LightShow = 0;
     }
-    if (curSwitch==resetSwitch || resetDoubleClick || (ResetHold && CurrentTime > LastSolTestTime + 250)) {
+    if (curSwitch == otherSwitch) {
+      LightShow += 1;
+      if (LightShow > 12) LightShow = 0; // Light displays numbered zero through 12
+      returnState = 20000 + LightShow;
+      RPU_TurnOffAllLamps();
+      if (LightShow == 0) {
+        CurValue = 99;
+        RPU_SetDisplay(0, CurValue, true);
+        for (int count=0; count<RPU_MAX_LAMPS; count++) {
+        #ifdef RPU_STROBE_LAMP
+        if (count != RPU_STROBE_LAMP || RPU_STROBE_TYPE >= 3) RPU_SetLampState(count, 1, 0, 500);
+        #else
+        RPU_SetLampState(count, 1, 0, 500);
+        #endif
+        }
+      }
+    }
+    else if (curSwitch==resetSwitch && LightShow > 0) {
+      RPU_TurnOffAllLamps();
+      returnState = 20000 + LightShow;
+    }
+    else if (curSwitch==resetSwitch || resetDoubleClick || (ResetHold && CurrentTime > LastSolTestTime + 250)) {
+      returnState = 20000;
       LastSolTestTime = CurrentTime;
       CurValue += 1;
       if (CurValue>99) CurValue = 0;
@@ -535,38 +570,88 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
     EnterCoinChuteData(curSwitch, resetDoubleClick, resetBeingHeld, curStateChanged, CurrentTime, resetSwitch, otherSwitch, endSwitch);
   } 
 
+  /************* Update a (large) score value ************/
+
   if (savedScoreStartByte) {
     if (curStateChanged) {
       SavedValue = RPU_ReadULFromEEProm(savedScoreStartByte);
-      RPU_SetDisplay(0, SavedValue, true);  
+      RPU_SetDisplay(0, SavedValue, true);
+      CurDigit = 0;
     }
-
-    if (curSwitch==resetSwitch) {
-      SavedValue += 1000;
-      RPU_SetDisplay(0, SavedValue, true);  
-      RPU_WriteULToEEProm(savedScoreStartByte, SavedValue);
-    }
-
-    if (resetBeingHeld && (CurrentTime>=NextSpeedyValueChange)) {
-      SavedValue += 1000;
-      RPU_SetDisplay(0, SavedValue, true);  
-      if (NumSpeedyChanges<6) NextSpeedyValueChange = CurrentTime + 400;
-      else if (NumSpeedyChanges<50) NextSpeedyValueChange = CurrentTime + 50;
-      else NextSpeedyValueChange = CurrentTime + 10;
-      NumSpeedyChanges += 1;
-    }
-
-    if (!resetBeingHeld && NumSpeedyChanges>0) {
-      RPU_WriteULToEEProm(savedScoreStartByte, SavedValue);
-      NumSpeedyChanges = 0;
-    }
-    
-    if (resetDoubleClick) {
-      SavedValue = 0;
-      RPU_SetDisplay(0, SavedValue, true);  
-      RPU_WriteULToEEProm(savedScoreStartByte, SavedValue);
+    if (CurDigit == 0) {                // Increase by 1000 with increasing speed
+      if (curSwitch==resetSwitch) {
+        SavedValue += 1000;
+        RPU_SetDisplay(0, SavedValue, true);  
+        RPU_WriteULToEEProm(savedScoreStartByte, SavedValue);
+      }
+      if (resetBeingHeld && (CurrentTime>=NextSpeedyValueChange)) {
+        SavedValue += 1000;
+        RPU_SetDisplay(0, SavedValue, true);  
+        if (NumSpeedyChanges<6) NextSpeedyValueChange = CurrentTime + 400;
+        else if (NumSpeedyChanges<50) NextSpeedyValueChange = CurrentTime + 50;
+        else NextSpeedyValueChange = CurrentTime + 10;
+        NumSpeedyChanges += 1;
+      }
+      if (!resetBeingHeld && NumSpeedyChanges>0) {
+        RPU_WriteULToEEProm(savedScoreStartByte, SavedValue);
+        NumSpeedyChanges = 0;
+      }
+      if (resetDoubleClick) {
+        SavedValue = 0;
+        RPU_SetDisplay(0, SavedValue, true);  
+        RPU_WriteULToEEProm(savedScoreStartByte, SavedValue);
+      }
+      if (curSwitch == otherSwitch) {
+        CurDigit = 1;
+        TensVal = 10;
+        xValue = SavedValue;
+        CurValue = (SavedValue / TensVal) % 10;
+        LastSolTestTime = CurrentTime;
+      }
+    } else {                            // Increase one digit at a time
+      RPU_SetDigitFlash(0, CurDigit < RPU_OS_NUM_DIGITS ? CurDigit : RPU_OS_NUM_DIGITS - 1, xValue, CurrentTime, 250, true, 1);
+      if (curSwitch == otherSwitch) {
+        CurDigit += 1;
+        if (CurDigit > 8) otherDoubleClick = true; // Maximum 9 digits in unsigned long; return to other loop
+        TensVal *= 10;
+        CurValue = (SavedValue / TensVal) % 10;
+        if (CurDigit < RPU_OS_NUM_DIGITS) {
+          xValue = SavedValue;
+          RPU_SetDisplay(0, xValue, true, 1 + CurDigit);
+        }
+        else {
+          xValue = SavedValue;
+          for (byte count = RPU_OS_NUM_DIGITS; count <= CurDigit; ++count) {
+            xValue /= 10;
+          }
+          RPU_SetDisplay(0, xValue, true, RPU_OS_NUM_DIGITS);
+        }
+      }
+      if (curSwitch == resetSwitch || (ResetHold && CurrentTime > LastSolTestTime + 500)) {
+        LastSolTestTime = CurrentTime;
+        if (++CurValue > 9) CurValue = 0;
+        SavedValue = SavedValue - TensVal * ((SavedValue / TensVal) % 10) + TensVal * CurValue;
+        RPU_WriteULToEEProm(savedScoreStartByte, SavedValue);
+        if (CurDigit < RPU_OS_NUM_DIGITS) {
+          xValue = SavedValue;
+          RPU_SetDisplay(0, xValue, true, 1 + CurDigit);
+        }
+        else {
+          xValue = SavedValue;
+          for (byte count = RPU_OS_NUM_DIGITS; count <= CurDigit; ++count) {
+            xValue /= 10;
+          }
+          RPU_SetDisplay(0, xValue, true, RPU_OS_NUM_DIGITS);
+        }
+      }
+      if (otherDoubleClick) {
+        CurDigit = 0;
+        RPU_SetDisplay(0, SavedValue, true);
+      }
     }
   }
+
+  /************* Update a (smaller) audit number value ************/
 
   if (auditNumStartByte) {
     if (curStateChanged) {

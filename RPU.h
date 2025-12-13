@@ -17,9 +17,14 @@
 
     See <https://www.gnu.org/licenses/>.
 
-    Version 2025.01 by Dave's Think Tank
+    Version FG2025.01 by Dave's Think Tank
 
     - Wrote three functions to allow flashing of a single digit: RPU_SetDigitFlash, RPU_SetDigitFlashCredits, and RPU_SetDigitFlashBallInPlay.
+    
+    Version ST2025.10 by Dave's Think Tank
+
+    - Added blankByMagnitude and minDigits to RPU_SetDigitFlash() (one of my subroutines at the bottom).
+    
  */
 
 
@@ -311,7 +316,8 @@ const uint16_t FourteenSegmentASCII[96] = {
 
 /********************************** Addons from Dave's Think Tank **********************************/
 
-void RPU_SetDigitFlash(int displayNumber, int digitNumber, unsigned long value, unsigned long curTime, int period);
+void RPU_SetDigitFlash(int displayNumber, int digitNumber, unsigned long value, unsigned long curTime, int period, boolean blankByMagnitude=false, byte minDigits=2);
 void RPU_SetDigitFlashCredits(int digit, unsigned long curTime, int period);
 void RPU_SetDigitFlashBallInPlay(int digit, unsigned long curTime, int period);
 void RPU_ClearSwitches();
+byte RPU_SwitchCount();

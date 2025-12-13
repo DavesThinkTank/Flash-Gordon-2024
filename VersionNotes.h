@@ -429,3 +429,40 @@ Additions and changes in this version:
 
 
 */
+
+
+/**************************************************************************
+
+Version 2025.11 by Dave's Think Tank
+
+Important Rule Change:
+
+- Ming must now be defeated three times (adjustable from 1 to 4) OVER THE ENTIRE GAME. Previously, you needed to defeat Ming three times in a single battle.
+  Getting to the final battle is already difficult, but then defeating Ming three times seems almost impossible. This change makes victory possible for 
+  excellent players, not just incredible players!
+
+Additions and changes in this version:
+
+- Added ability to modify score values one digit at a time in self-test!
+- Lamp self-test has been extended to include several backbox and playfield light shows from the game.
+- Cleaned up light patterns. Brighter, less flicker, especially with LEDs. 
+- Took out dimming and overlap from backglass light patterns, to make patterns easier to see.
+- Minor changes to some light patterns, to improve the intended effect.
+- In retro attract playfield light pattern, bonus lights changed from flickering to rotating (as in original).
+- Renamed AttractDown() to AttractUpDown(), AttractSiren() to AttractSweep(), to better match their patterns.
+- Moved light pattern code to functions: SaucerUp(), SaucerDown(), MingAttackLights().
+- Renamed BackglassLampsKnightRider() to BackglassLampsBounce().
+- New Backglass light patterns: Center Bounce and Loop.
+- Added a reverse sweep playfield light pattern to attract mode.
+- Arrow lights now continue to operate through bonus collection. Looks better, and useful if DIP switch 24 set (memory for upper level 1-2-3 arrows).
+- "Bounce" sound added to 50,000 and 100,000 bonus collection.
+- I am told that the original xenon tube lamp flashes during attract callout. Added this for machines with this type of strobe.
+
+Bug Fixes:
+
+- Mini and super bonus countdowns counted down to 1, not zero. Points were correct, but #1 light did not go out at end of each countdown. Fixed.
+- A rare error, but one known to have occured in many Arduino pinballs, will cause all switches to fire simultaneously, causing problems during 
+  attract mode, or sometimes during a game. Code has been added to capture these errors before they can cause any disruption. 
+
+
+*/

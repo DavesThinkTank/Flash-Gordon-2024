@@ -1,10 +1,10 @@
 # Flash Gordon 2024
-## Version 2025.10
+## Version 2025.11
 ## for the Arduino Mega 2560 Rev3
 
 The latest release is available from the Flash-Gordon-2024 main page. Just click on the green <> Code button, and select Download ZIP. 
 
-The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (10). If it doesn't, you have the wrong software or the wrong version! 
+The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (11). If it doesn't, you have the wrong software or the wrong version! 
 
 During these four seconds you should also see a 3, 6, or 5 (W, G, or S) in the Match window, indicating the software is set up for a WAV Trigger, Geeteoh, or Squawk & Talk. If it is set up for the wrong sound card, there is a simple change you can make. Check out the section titled “Selecting Your Sound Board” in the manual to find out how. Also note that, sound files are included in a ZIP file on the main page.
 
@@ -36,37 +36,67 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk .
 * Go to https://github.com/DavesThinkTank/Flash-Gordon-2024 
 * Click on the green Code button
 * Select Download ZIP
-* Place all files in a folder named: FG2025p10
+* Place all files in a folder named: FG2025p11
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2025p10.ino in your FG2025p10 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2025p11.ino in your FG2025p11 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh or WAV Trigger, if you have one.
 
 ### Operator game adjustments
-This section is at the top of the FG2025p10.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2025p11.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
-Score award thresholds and other game settings can be set in self-test / audit. Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
+Score award thresholds and other game settings can be set in self-test / audit / game settings. Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
 
 ### How to operate self-test / audit / game settings
-- Inner coin door button: Enters self-test / audit mode and advances through sections
-- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-10manual.docx for a full explanation of the self-tests and game settings available.
+- Inner coin door button: Enters self-test / audit / game settings mode and advances through sections
+- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-11manual.docx for a full explanation of the self-tests and game settings available.
 - Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+### Version 2025.11 by Dave's Think Tank
+
+Important Rule Change:
+
+- Ming must now be defeated three times (adjustable from 1 to 4) OVER THE ENTIRE GAME. Previously, you needed to defeat Ming three times in a single battle.
+  Getting to the final battle is already difficult, but then defeating Ming three times seems almost impossible. This change makes victory possible for 
+  excellent players, not just incredible players!
+
+Additions and changes in this version:
+
+- Added ability to modify score values one digit at a time in self-test!
+- Lamp self-test has been extended to include several backbox and playfield light shows from the game.
+- Cleaned up light patterns. Brighter, less flicker, especially with LEDs. 
+- Took out dimming and overlap from backglass light patterns, to make patterns easier to see.
+- Minor changes to some light patterns, to improve the intended effect.
+- In retro attract playfield light pattern, bonus lights changed from flickering to rotating (as in original).
+- Renamed AttractDown() to AttractUpDown(), AttractSiren() to AttractSweep(), to better match their patterns.
+- Moved light pattern code to functions: SaucerUp(), SaucerDown(), MingAttackLights().
+- Renamed BackglassLampsKnightRider() to BackglassLampsBounce().
+- New Backglass light patterns: Center Bounce and Loop.
+- Added a reverse sweep playfield light pattern to attract mode.
+- Arrow lights now continue to operate through bonus collection. Looks better, and useful if DIP switch 24 set (memory for upper level 1-2-3 arrows).
+- "Bounce" sound added to 50,000 and 100,000 bonus collection.
+- I am told that the original xenon tube lamp flashes during attract callout. Added this for machines with this type of strobe.
+
+Bug Fixes:
+
+- Mini and super bonus countdowns counted down to 1, not zero. Points were correct, but #1 light did not go out at end of each countdown. Fixed.
+- A rare error, but one known to have occured in many Arduino pinballs, will cause all switches to fire simultaneously, causing problems during 
+  attract mode, or sometimes during a game. Code has been added to capture these errors before they can cause any disruption.
+
+
 ### Version 2025.10 by Dave's Think Tank
 
 Additions and changes in this version:
 - The code for the strobe light has been rewritten to accomodate any of the following five types of strobe. Set RPU_STROBE_TYPE in RPU_Config.h (down about 90 lines):
-
       0 = Strobe signal always off
       1 = Strobe signal always on
       2 = Original xenon tube strobe
       3 = Incandescent / LED light(s)
       4 = Incandescent / LED light(s) with inverted on/off signal
-  
-    If you set it to 2, you get the original game's strobe effect, which was 4 flashes at the start of a game, and 5 in the up/down kicker.
+  If you set it to 2, you get the original game's strobe effect, which was 4 flashes at the start of a game, and 5 in the up/down kicker.
   Setting it to 3 or 4 gives you a variety of effects, coordinated with the other lights in the backbox.
   - The strobe was not being used in light patterns during normal game play. It now runs throughout for options 3 and 4.
   - Coin lockout and the K1 flipper relay have been added to the solenoid self-tests.
@@ -344,4 +374,3 @@ Additions and changes in this version:
 - Added total replays to self-test / audit
 - Added score award thresholds to give credits that are adjustable in machine self-test / audit
 - Added current credits that are adjustable in machine self-test / audit
-

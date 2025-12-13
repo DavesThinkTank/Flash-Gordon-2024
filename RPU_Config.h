@@ -17,7 +17,7 @@
 
     See <https://www.gnu.org/licenses/>.
 
-    Version 2025.10 by Dave's Think Tank
+    Version FG2025.10 by Dave's Think Tank
 
     - Added RPU_USE_LED to control dimming of LED lamps
     - Added RPU_STROBE_LAMP and RPU_STROBE_TYPE to control use of xenon strobe lamps and their replacements
