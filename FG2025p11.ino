@@ -4358,7 +4358,11 @@ int CountdownBonus(boolean curStateChanged) {
       CurrentScores[CurrentPlayer] += 50000;
       RPU_SetDisplay(CurrentPlayer, DisplayValue = CurrentScores[CurrentPlayer], true, 2);
       RPU_SetLampState(LA_BONUS_MINI_50K, 0);
+      #if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
       PlaySound(25, 0, sfxGain + 4); // Bounce
+      #else
+      PlaySound(25); // Bounce
+      #endif
       MiniBonusCollectTimer = CurrentTime + CDBSpeed * SoundData[25][2];
     }
     if (MiniBonusCollectTimer > CurrentTime) return MACHINE_STATE_COUNTDOWN_BONUS;
@@ -4369,7 +4373,11 @@ int CountdownBonus(boolean curStateChanged) {
       CurrentScores[CurrentPlayer] += 100000;
       RPU_SetDisplay(CurrentPlayer, DisplayValue = CurrentScores[CurrentPlayer], true, 2);
       RPU_SetLampState(LA_BONUS_SUPER_100K, 0);
+      #if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
       PlaySound(25, 0, sfxGain + 4); // Bounce
+      #else
+      PlaySound(25); // Bounce
+      #endif
       SuperBonusCollectTimer = CurrentTime + CDBSpeed * SoundData[25][2];
     }
     if (SuperBonusCollectTimer > CurrentTime) return MACHINE_STATE_COUNTDOWN_BONUS;

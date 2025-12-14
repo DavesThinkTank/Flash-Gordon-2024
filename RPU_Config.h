@@ -58,9 +58,9 @@
 // These defines allow this configuration to eliminate some functions
 // to reduce program size
 #define RPU_OS_USE_DIP_SWITCHES 
-//#define RPU_OS_USE_S_AND_T              // FLASH GORDON: Define exactly one of RPU_OS_USE_S_AND_T,
+#define RPU_OS_USE_S_AND_T              // FLASH GORDON: Define exactly one of RPU_OS_USE_S_AND_T,
 //#define RPU_OS_USE_WAV_TRIGGER          // RPU_OS_USE_WAV_TRIGGER, or RPU_OS_USE_WAV_TRIGGER_1p3.
-#define RPU_OS_USE_WAV_TRIGGER_1p3        // Note that RPU_OS_USE_WAV_TRIGGER is only for older model WAV Triggers.
+//#define RPU_OS_USE_WAV_TRIGGER_1p3        // Note that RPU_OS_USE_WAV_TRIGGER is only for older model WAV Triggers.
 //#define RPU_OS_USE_DASH51               // Note also that if you use a Geeteoh board, you should define RPU_OS_USE_S_AND_T.
 //#define RPU_OS_USE_SB100                // Note also that both WAV Trigger and Geeteoh boards require you to define USE_EXTENDED_SOUNDS in the main program.
 //#define RPU_OS_USE_SB300
