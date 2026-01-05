@@ -213,7 +213,7 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
     }
     if (curSwitch == otherSwitch) {
       LightShow += 1;
-      if (LightShow > 12) LightShow = 0; // Light displays numbered zero through 12
+      if (LightShow > 13) LightShow = 0; // Light displays numbered zero through 12
       returnState = 20000 + LightShow;
       RPU_TurnOffAllLamps();
       if (LightShow == 0) {

@@ -1,10 +1,10 @@
 # Flash Gordon 2024
-## Version 2025.11
+## Version 2025.12
 ## for the Arduino Mega 2560 Rev3
 
 The latest release is available from the Flash-Gordon-2024 main page. Just click on the green <> Code button, and select Download ZIP. 
 
-The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (11). If it doesn't, you have the wrong software or the wrong version! 
+The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2025) and the Credit window (12). If it doesn't, you have the wrong software or the wrong version! 
 
 During these four seconds you should also see a 3, 6, or 5 (W, G, or S) in the Match window, indicating the software is set up for a WAV Trigger, Geeteoh, or Squawk & Talk. If it is set up for the wrong sound card, there is a simple change you can make. Check out the section titled “Selecting Your Sound Board” in the manual to find out how. Also note that, sound files are included in a ZIP file on the main page.
 
@@ -36,25 +36,61 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk .
 * Go to https://github.com/DavesThinkTank/Flash-Gordon-2024 
 * Click on the green Code button
 * Select Download ZIP
-* Place all files in a folder named: FG2025p11
+* Place all files in a folder named: FG2025p12
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2025p11.ino in your FG2025p11 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2025p12.ino in your FG2025p12 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh or WAV Trigger, if you have one.
 
 ### Operator game adjustments
-This section is at the top of the FG2025p11.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2025p12.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit / game settings. Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
 
 ### How to operate self-test / audit / game settings
 - Inner coin door button: Enters self-test / audit / game settings mode and advances through sections
-- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-11manual.docx for a full explanation of the self-tests and game settings available.
+- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2025-12manual.docx for a full explanation of the self-tests and game settings available.
 - Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+### Version 2025.12 by Dave's Think Tank
+
+Rule Change:
+
+- The ball save time limit is only applied if you have earned less than 25000 points. So if you have a reasonable score, and especially a high skill shot, it is not taken 
+  away by the ball save time limit.
+- If you return to the shooter lane without hitting down the single target, you get 5000 points (1000 x 3 rollovers plus 2000 for the lane switch). Prevously zero.
+
+Additions and changes in this version:
+
+- Added use of lower ring lights to show time remaining during 15-second timers.
+- Added use of upper ring lights to show time remaining during 5-second timers.
+- Added blinking to ring lights for timers.
+- Added BattleSweep() light pattern during Final Battle. Helps distinguish Final Battle from regular game play, especially if the game is not set up with music.
+- Since drop target lights on lower playfield needed for BattleSweep(), changed Ming lives indicator lights to 1-2-3 drop target arrow lights, plus 4X light if needed.
+- Credit display is used to indicate progress toward 140 points needed to defeat Ming in the Final Battle. But 140 can't be displayed in 2 digits! Converted progress
+  to countdown from 12, same as used in the up/down kicker lights.
+- Synchronized marquee lights with BattleSweep() lights.
+- Removed all unnecessary light pattern code from Final Battle code (WizardMode). Greatly simplified remaining code.
+- "Look out, Flash!" repeated too many times. Removed from lit right-side targets and lit inlanes. Replaced with zap sound. Removed from upper-level target, replaced
+   with new sound, Ming saying "Pathetic Earthlings". Sound files must be updated.
+- Added new sound, a single tick from a clock, in case I want to add to timers at some point. Currently unused.
+- Shortened time before new ball ejected. Comes up almost immediately after bonus countdown now, although it does wait for the tilt voice or ball save voice to end
+  before resetting solenoids.
+- I have been told that it is an expected function of pinball machines that, if you press the game button during ball 2 of a game or later, the 
+  game will end. I have implemented this. Pressing the game button will end your game, and send you into Attract Mode.
+- You can now get into Kids' Mode by turning on the machine while holding the game button. Be sure to wait for the Kid Ming laugh.
+- You can still switch between regular and Kids' Mode by pressing the game button and the coin slot 3 switch at the same time, during Attract mode. 
+  However, it will no longer automatically put you into a game.
+
+Bug Fixes:
+
+- A couple function calls to RPU_SetLampState had an extra parameter, accidentally setting the flash period to 0 or 1. No effect on lights, but fixed it anyway.
+- 2X and 3X 15-second clock lamps would not go off when ball ended, staying on until bonus countdown ended. Fixed. Also adjusted flash rate to match ring light clock.
+- Match display was blank when game turned on. Set to zero.
+
 ### Version 2025.11 by Dave's Think Tank
 
 Important Rule Change:
