@@ -1157,6 +1157,7 @@ int InitNewBall(bool curStateChanged, int ballNum) {
     TargetLowerBottomBlip = 0;
     delayTimer = 0;
     CDBSpeed = 100;
+    TimerLightsWereUsed = TimerLightsUsed = 0;
 
     // Upper 3 targets: Reset only if DIP switch not set, or  first ball, or all 3 hit
     if (!dip123ArrowsMemory || FirstBall || (DTarget3Lights[CurrentPlayer][0] && DTarget3Lights[CurrentPlayer][1] && DTarget3Lights[CurrentPlayer][2])) {
