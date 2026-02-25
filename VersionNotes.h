@@ -507,3 +507,43 @@ Bug Fixes:
 
 
 */
+
+
+/**************************************************************************
+
+Version 2026.01 by Dave's Think Tank
+
+Additions and changes in this version:
+- If in match mode, can no longer cancel game by pressing the game switch. Prevents impatient players from accidentally ending game before match awards.
+- Reverse sweep and Battle Sweep synchronized with backglass lights added to Light Test.
+
+Bug Fixes:
+- BadSwitches: Fixed so that error data written in credit and match windows cannot be written over until attract mode ends. Removed unnecessary overwriting 
+    lines from scrolling display code.
+- SW_SAUCER during attract mode handled when switch hit, rather than while switch closed. Should ensure BadSwitches does not repeatedly pop the saucer.
+  - Needed to add code to Setup() to add SW_SAUCER to switch stack if ball in saucer when machine turned on.
+- SW_SAUCER during tilt modified to avoid solenoid activation more than once during ball bounce in saucer.
+
+
+*/
+
+
+/**************************************************************************
+
+Version 2026.02 by Dave's Think Tank
+
+Rule Change:
+- Alternate skill shot added! Having a skill shot based on rollover buttons is not something everyone wants. Rollover buttons might not always register,
+    or the ball may get stuck above them requiring you to tilt the machine to get it moving again. So I've set it up such that you can select an alternative
+    skill shot. Just define the variable ALTERNATIVE_SKILL_SHOT to 1 in the Operator Game Adjustments. Your new skill shot will be to hit the upper-level
+    drop target with the flashing arrow for an additional 30,000 points. Setting the value to 0 will go back to the old skill shot based on the rollover 
+    buttons.
+
+Changes / Additions:
+- Display test modified to allow showing only the value eight. Assists in finding missing or dim segments, or assessing burnt segments.
+- Changed credit display during Final Battle to count up to 12, rather than down from 12. Seeing the 12 is more meaningful than seeing a zero.
+
+Bug Fixes:
+- Staggered solenoid firings when multiple solenoids fired at the same time (25ms).
+
+*/

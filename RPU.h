@@ -24,6 +24,10 @@
     Version ST2025.10 by Dave's Think Tank
 
     - Added blankByMagnitude and minDigits to RPU_SetDigitFlash() (one of my subroutines at the bottom).
+
+    Version ST2026.02 by Dave's Think Tank
+
+    - Extended RPU_CycleAllDisplays with boolean display8, to allow cycling displays with value 8 only.
     
  */
 
@@ -116,7 +120,7 @@ void RPU_SetDisplayMatch(int value, boolean displayOn = true, boolean showBothDi
 void RPU_SetDisplayBallInPlay(int value, boolean displayOn = true, boolean showBothDigits=true);
 void RPU_SetDisplayFlash(int displayNumber, unsigned long value, unsigned long curTime, int period=500, byte minDigits=2);
 void RPU_SetDisplayFlashCredits(unsigned long curTime, int period=100);
-void RPU_CycleAllDisplays(unsigned long curTime, byte digitNum=0); // Self-test function
+void RPU_CycleAllDisplays(unsigned long curTime, byte digitNum = 0, boolean display8 = 0);  // Self-test function
 byte RPU_GetDisplayBlank(int displayNumber);
 #if (RPU_MPU_ARCHITECTURE==15)
 byte RPU_SetDisplayText(int displayNumber, char *text, boolean blankByLength=true);
