@@ -1,10 +1,10 @@
-# Flash Gordon 2024
-## Version 2026.02
+# Flash Gordon 2026
+## Version 2026.03
 ## for the Arduino Mega 2560 Rev3
 
 The latest release is available from the Flash-Gordon-2024 main page. Just click on the green <> Code button, and select Download ZIP. 
 
-The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2026) and the Credit window (02). If it doesn't, you have the wrong software or the wrong version! 
+The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2026) and the Credit window (03). If it doesn't, you have the wrong software or the wrong version! 
 
 During these four seconds you should also see a 3, 6, or 5 (W, G, or S) in the Match window, indicating the software is set up for a WAV Trigger, Geeteoh, or Squawk & Talk. If it is set up for the wrong sound card, there is a simple change you can make. Check out the section titled “Selecting Your Sound Board” in the manual to find out how. Also note that, sound files are included in a ZIP file on the main page.
 
@@ -36,25 +36,48 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk .
 * Go to https://github.com/DavesThinkTank/Flash-Gordon-2024 
 * Click on the green Code button
 * Select Download ZIP
-* Place all files in a folder named: FG2026p02
+* Place all files in a folder named: FG2026p03
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2026p02.ino in your FG2026p02 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2026p03.ino in your FG2026p03 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh or WAV Trigger, if you have one.
 
 ### Operator game adjustments
-This section is at the top of the FG2026p02.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2026p03.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit / game settings. Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
 
 ### How to operate self-test / audit / game settings
 - Inner coin door button: Enters self-test / audit / game settings mode and advances through sections
-- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2026-02manual.docx for a full explanation of the self-tests and game settings available.
+- Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2026-03manual.docx for a full explanation of the self-tests and game settings available.
 - Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+### Version 2026.03 by Dave's Think Tank
+
+Changes / Additions:
+- Ball search added. If no playfield switch is hit for 20 seconds, a ball search is conducted by firing all solenoids. If there is still no switch hit, tilt is turned
+    off, and remains off until a playfield switch is hit. You have the option to disallow this by defining BALL_SEARCH_TILT to 0 in the Operator Game Adjustments. 
+- "Operator Game Adjustments" has been moved, in order to simplify it for use by pinball owners. A new file "Adjustments.h" was created. This allows adjustments which were 
+    previously in the file RPU_Config.h to be combined in one place with other adjustments which were in FG2026p03.ino. It also allows selection of sound board and strobe
+    type to be handled by setting a single variable, rather than requiring users to modify multiple lines of code in multiple files.
+- A new "Final Battle" game mode has been added. In this game you are given three balls to defeat Ming in the Final Battle. Great for quick competitions! Three gameplay 
+    modes are now available - regular gameplay, Kids' Mode, and Final Battle mode.
+- "Game Mode" is selected at the start of a new game by pressing and holding the game button, either during attract mode or before player 1 begins play. After holding the 
+    button for one second, the credit window will begin scrolling the values 1, 2, and 3. Release the button on 1 for a regular game, 2 for kids' mode, or 3 for Final Battle 
+    mode! This also resolves a problem where players would find out after starting a game that they were in kids' mode. When this happens just long-press the game button and
+    select the game you wanted. Short-pressing the game button will still allow you to add more players for as long as you are on ball 1.
+- Three methods of turning on kids' mode - holding the game button while turning on the machine, changing in self-test settings, and pressing the game button and coin slot 3 
+    switch at the same time, have been removed. The new game mode selection handles this far better than any of these.
+- Three-second delay at start of game removed. Was meant to show a light display, but really, who needs it?
+- Ming laugh on coin drop changed from voice to sound effect. This means it will play as soon as coin dropped, rather than pausing till other sounds end.
+
+Bug Fixes:
+- If Final Battle entered while playfield 2x or 3x was on, some playfield scores could contine to be multiplied during Final Battle. Fixed.
+- If sound test ended on a background sound, sound would not end when DIP switch test began. Fixed.
+
 ### Version 2026.02 by Dave's Think Tank
 
 Rule Change:

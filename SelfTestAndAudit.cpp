@@ -79,6 +79,11 @@ Version ST2025.10 by Dave's Think Tank
 Version ST2026.02 by Dave's Think Tank
 
 - Extended cycling of displays to allow cycling displays with value 8 only.
+
+Version FG2026.03 by Dave's Think Tank
+
+- If sound test ended on a background sound, sound would not end when DIP switch test began.
+
  */
 
 #include <Arduino.h>
@@ -439,7 +444,7 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
 #elif defined(RPU_OS_USE_WTYPE_2_SOUND)
         RPU_PushToSoundStack(SoundToPlay, 8);
 #elif defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
-        returnState = 10000 + SoundToPlay;  // Main program has all the info to play sounds using WAV Trigger!
+        returnState = 10000 + (SoundToPlay == 05 ? 90 : SoundToPlay);  // Main program has all the info to play sounds using WAV Trigger! Sound 5 saved for DIP switches below.
 #endif
 
         SoundPlaying = SoundToPlay;
@@ -458,11 +463,11 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
   } else if (curState == MACHINE_STATE_TEST_DIP_SWITCHES) {  //                                              *** Test DIP Switches ***
 
     if (curStateChanged) {
-#ifdef USE_SB100
-      RPU_PlaySB100(0);
+#if defined(RPU_OS_USE_SB100)
+        RPU_PlaySB100(0);
 #endif
-#ifdef RPU_OS_USE_S_AND_T
-      RPU_PlaySoundSAndT(90);  // Sound off for Geeteoh
+#if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3) || defined(RPU_OS_USE_S_AND_T)
+        returnState = 10005;  // Main program has all the info to play sounds using WAV Trigger!
 #endif
 
       RPU_TurnOffAllLamps();

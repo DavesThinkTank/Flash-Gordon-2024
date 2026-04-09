@@ -24,6 +24,8 @@
     - Added RPU_COIN_LOCKOUT and RPU_FLIPPER_ENABLE; used in solenoid self-test
  */
 
+ #include "Adjustments.h"
+
 #ifndef RPU_CONFIG_H
 
 /***
@@ -58,11 +60,11 @@
 // These defines allow this configuration to eliminate some functions
 // to reduce program size
 #define RPU_OS_USE_DIP_SWITCHES 
-//#define RPU_OS_USE_S_AND_T              // FLASH GORDON: Define exactly one of RPU_OS_USE_S_AND_T,
-//#define RPU_OS_USE_WAV_TRIGGER          // RPU_OS_USE_WAV_TRIGGER, or RPU_OS_USE_WAV_TRIGGER_1p3.
-#define RPU_OS_USE_WAV_TRIGGER_1p3        // Note that RPU_OS_USE_WAV_TRIGGER is only for older model WAV Triggers.
-//#define RPU_OS_USE_DASH51               // Note also that if you use a Geeteoh board, you should define RPU_OS_USE_S_AND_T.
-//#define RPU_OS_USE_SB100                // Note also that both WAV Trigger and Geeteoh boards require you to define USE_EXTENDED_SOUNDS in the main program.
+//#define RPU_OS_USE_S_AND_T              // FLASH GORDON: The sound board is no longer defined here. 
+//#define RPU_OS_USE_WAV_TRIGGER          //               Please look in the Operator Game Adjustments in the file Adjustments.h
+//#define RPU_OS_USE_WAV_TRIGGER_1p3
+//#define RPU_OS_USE_DASH51
+//#define RPU_OS_USE_SB100
 //#define RPU_OS_USE_SB300
 //#define RPU_OS_DISABLE_CPC_FOR_SPACE
 #define RPU_OS_USE_AUX_LAMPS
@@ -79,7 +81,7 @@
 // Definitions added by Dave's Think Tank:
 // Pinball uses LED lamps rather than incendescent. Comment out for incandescent.
 #define RPU_USE_LED
-// Identify xenon strobe lamp (e.g. Flash Gordon). Comment out if no such lamp.
+// Identify xenon strobe lamp (e.g. lamp #75 for Flash Gordon). Comment out if no such lamp.
 #define RPU_STROBE_LAMP 75
 // Identify strobe type:
 //     0 = Strobe signal always off
@@ -87,7 +89,8 @@
 //     2 = Original xenon tube strobe
 //     3 = Incandescent / LED light(s)
 //     4 = Incandescent / LED light(s) with inverted signal
-#define RPU_STROBE_TYPE  3
+#define RPU_STROBE_TYPE  MY_STROBE_TYPE // Flash Gordon: The strobe type is no longer defined here. Please go to the file Adjustments.h
+
 // Coin lockout and K1 relay handled differently than other solenoids
 #define RPU_COIN_LOCKOUT             15 // COIN LOCKOUT DOOR
 #define RPU_FLIPPER_ENABLE           16 // K1 RELAY (FLIPPER ENABLE) (Also used as the maximum solenoid number)

@@ -547,3 +547,32 @@ Bug Fixes:
 - Staggered solenoid firings when multiple solenoids fired at the same time (25ms).
 
 */
+
+
+/**************************************************************************
+
+Version 2026.03 by Dave's Think Tank
+
+Rule Change:
+
+Changes / Additions:
+- Ball search added. If no playfield switch is hit for 20 seconds, a ball search is conducted by firing all solenoids. If there is still no switch hit, tilt is turned
+    off, and remains off until a playfield switch is hit. You have the option to disallow this by defining BALL_SEARCH_TILT to 0 in the Operator Game Adjustments. 
+- "Operator Game Adjustments" has been moved, in order to simplify it for use by pinball owners. A new file "Adjustments.h" was created. This allows adjustments which were 
+    previously in the file RPU_Config.h to be combined in one place with other adjustments which were in FG2026p03.ino. It also allows selection of sound board and strobe
+    type to be handled by setting a single variable, rather than requiring users to modify multiple lines of code in multiple files.
+- A new "Final Battle" game mode has been added. In this game you are given three balls to defeat Ming in the Final Battle. Great for quick competitions! Three gameplay 
+    modes are now available - regular gameplay, Kids' Mode, and Final Battle mode.
+- "Game Mode" is selected at the start of a new game by pressing and holding the game button, either during attract mode or before player 1 begins play. After holding the 
+    button for one second, the credit window will begin scrolling the values 1, 2, and 3. Release the button on 1 for a regular game, 2 for kids' mode, or 3 for Final Battle 
+    mode! This also resolves a problem where players would find out after starting a game that they were in kids' mode. When this happens just long-press the game button and
+    select the game you wanted. Short-pressing the game button will still allow you to add more players for as long as you are on ball 1.
+- Three methods of turning on kids' mode - holding the game button while turning on the machine, changing in self-test settings, and pressing the game button and coin slot 3 
+    switch at the same time, have been removed. The new game mode selection handles this far better than any of these.
+- Three-second delay at start of game removed. Was meant to show a light display, but really, who needs it?
+- Ming laugh on coin drop changed from voice to sound effect. This means it will play as soon as coin dropped, rather than pausing till other sounds end.
+
+Bug Fixes:
+- If Final Battle entered while playfield 2x or 3x was on, some playfield scores could contine to be multiplied during Final Battle. Fixed.
+- If sound test ended on a background sound, sound would not end when DIP switch test began. Fixed.
+*/
