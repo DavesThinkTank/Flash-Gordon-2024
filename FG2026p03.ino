@@ -689,10 +689,11 @@ void setup() {
     RPU_WriteByteToEEProm(RPU_VOICE_GAIN, AdjVoiceGain);
   }
   CalculateGain();
+  SetupAudio(49);  // Flash!
+#else
+  PlaySound(49);   // Flash!
 #endif
   
-  SetupAudio(49);  // Flash!
-
   if (RPU_ReadSingleSwitchState(SW_SAUCER))  // If ball in saucer at start, make sure it is placed in switch stack
     RPU_PushToSwitchStack(SW_SAUCER);
 }
