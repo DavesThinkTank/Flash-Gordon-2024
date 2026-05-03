@@ -1,10 +1,10 @@
 # Flash Gordon 2026
-## Version 2026.03
+## Version 2026.04
 ## for the Arduino Mega 2560 Rev3
 
 The latest release is available from the Flash-Gordon-2024 main page. Just click on the green <> Code button, and select Download ZIP. 
 
-The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2026) and the Credit window (03). If it doesn't, you have the wrong software or the wrong version! 
+The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2026) and the Credit window (04). If it doesn't, you have the wrong software or the wrong version! 
 
 During these four seconds you should also see a 3, 6, or 5 (W, G, or S) in the Match window, indicating the software is set up for a WAV Trigger, Geeteoh, or Squawk & Talk. If it is set up for the wrong sound card, there is a simple change you can make. Check out the section titled “Selecting Your Sound Board” in the manual to find out how. Also note that, sound files are included in a ZIP file on the main page.
 
@@ -36,14 +36,14 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk .
 * Go to https://github.com/DavesThinkTank/Flash-Gordon-2024 
 * Click on the green Code button
 * Select Download ZIP
-* Place all files in a folder named: FG2026p03
+* Place all files in a folder named: FG2026p04
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2026p03.ino in your FG2026p03 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2026p04.ino in your FG2026p04 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh or WAV Trigger, if you have one.
 
 ### Operator game adjustments
-This section is at the top of the FG2026p03.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the FG2026p04.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit / game settings. Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
@@ -55,6 +55,23 @@ Score award thresholds and other game settings can be set in self-test / audit /
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+### Version 2026.04 by Dave's Think Tank
+
+Rule Change:
+- Added 4th game mode. Retro Mode Plays the original game, with all the original sounds.
+- Removed the 2000 points for entering the shooter lane with single drop target raised (added in December). Complicated and unnecessary.
+
+Changes / Additions:
+- Modified high score and other large-value self-test updates to include values for up to four game modes.
+- Updates of high score and other large values begins with 10 slow increases, instead of 6. Should aid in fine tuning to ultimate value.
+- Modified code to fully distinguish between single click, double click, and long press of reset button. For example, previously a double click registered as
+  a single click followed by a double click.
+- Reviewed self-tests to ensure they all use the available buttons in a consistent manner, and as much as possible can be achieved with just the game button.
+- Replaced use of coin 3 switch in self-tests with "any other switch". That is, hitting any switch other than the game, slam, or sef-test switch replaces the use of the coin 3 switch.
+
+Bug Fixes:
+- Ball in Play light did not come on during Final Battle mode. fixed.
+
 ### Version 2026.03 by Dave's Think Tank
 
 Changes / Additions:

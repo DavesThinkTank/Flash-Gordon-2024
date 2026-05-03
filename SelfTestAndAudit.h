@@ -38,6 +38,11 @@
     Version 2025.09 by Dave's Think Tank
 
     - Combined all three coin counts into a single test
+
+   Version ST2026.04 by Dave's Think Tank
+
+   - Modified high score and other large-value updates to include values for up to four game modes.
+
  */
 
 // Self-Test Machine States (See also FGyyyypmm.h)
@@ -64,5 +69,13 @@
 unsigned long GetLastSelfTestChangedTime();
 void SetLastSelfTestChangedTime(unsigned long setSelfTestChange);
 int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long CurrentTime, byte resetSwitch, byte otherSwitch, byte endSwitch);
-void EnterCoinChuteData(byte curSwitch,boolean resetDoubleClick, boolean resetBeingHeld, boolean curStateChanged, 
-                                          unsigned long CurrentTime, byte resetSwitch, byte otherSwitch, byte endSwitch);
+
+void ShowScore1(unsigned long CurrentTime);
+void ShowScore2(unsigned long CurrentTime);
+void ShowScore3(unsigned long CurrentTime);
+void ShowHighScore(unsigned long CurrentTime);
+void ShowPersonalGoal(unsigned long CurrentTime);
+void ShowCoinChutes(unsigned long CurrentTime);
+void Enter4Data(byte curSwitch, boolean resetDoubleClick, boolean resetBeingHeld, boolean curStateChanged,
+                       unsigned long CurrentTime, byte resetSwitch, byte otherSwitch, byte endSwitch, unsigned int incrsize);
+

@@ -576,3 +576,25 @@ Bug Fixes:
 - If Final Battle entered while playfield 2x or 3x was on, some playfield scores could contine to be multiplied during Final Battle. Fixed.
 - If sound test ended on a background sound, sound would not end when DIP switch test began. Fixed.
 */
+
+
+
+/**************************************************************************
+
+Version 2026.04 by Dave's Think Tank
+
+Rule Change:
+- Added 4th game mode. Retro Mode Plays the original game, with all the original sounds.
+- Removed the 2000 points for entering the shooter lane with single drop target raised (added in December). Complicated and unnecessary.
+
+Changes / Additions:
+- Modified high score and other large-value self-test updates to include values for up to four game modes.
+- Updates of high score and other large values begins with 10 slow increases, instead of 6. Should aid in fine tuning to ultimate value.
+- Modified code to fully distinguish between single click, double click, and long press of reset button. For example, previously a double click registered as
+  a single click followed by a double click.
+- Reviewed self-tests to ensure they all use the available buttons in a consistent manner, and as much as possible can be achieved with just the game button.
+- Replaced use of coin 3 switch in self-tests with "any other switch". That is, hitting any switch other than the game, slam, or sef-test switch replaces the use of the coin 3 switch.
+
+Bug Fixes:
+- Ball in Play light did not come on during Final Battle mode. fixed.
+*/
