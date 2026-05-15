@@ -526,7 +526,7 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
 #if defined(RPU_OS_USE_SB100)
         RPU_PlaySB100(0);
 #endif
-#if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3) || defined(RPU_OS_USE_S_AND_T)
+#if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
         returnState = 10005;  // Main program has all the info to play sounds using WAV Trigger!
 #endif
 
