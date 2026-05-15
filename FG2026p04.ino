@@ -4331,7 +4331,9 @@ void SetupGameMode() {
   if (GameMode == 1) {
     // Replace all changed settings from Operator Game Adjustments!
     MingMax = MAX_HEALTH;
+#if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
     AdjustGTO = 6 * 256 + 255;
+#endif
   } else if (GameMode == 2) {
     kidMode = 1;
     KidSettings();
@@ -5628,7 +5630,9 @@ void KidSettings() {  // Set all DIP switches and game settings for beginner mod
 
   // Operator game adjustments set to easy
   MingMax = 1;
+#if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
   AdjustGTO = 6 * 256 + 255;
+#endif
 }
 
 // #################### RESET ALL VARIABLES FOR A FINAL BATTLE GAME ####################
@@ -5649,7 +5653,9 @@ void FinalBattleSettings() {  // Set all DIP switches and game settings for chal
   BallSaveUsed[0] = BallSaveUsed[1] = BallSaveUsed[2] = BallSaveUsed[3] = ballSaves;
   // Operator game adjustments set
   MingMax = 3;
+#if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
   AdjustGTO = 6 * 256 + 255;
+#endif
 }
 
 // #################### RESET ALL VARIABLES FOR THE ORIGINAL GAME ####################
@@ -5662,7 +5668,9 @@ void RetroSettings() {  // Set all DIP switches and game settings for beginner m
   BallSaveUsed[0] = BallSaveUsed[1] = BallSaveUsed[2] = BallSaveUsed[3] = ballSaves;
   
   PersonalGoalOn = 0;
+#if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
   AdjustGTO = 1 * 256 + 255;
+#endif
 }
 
 #if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
