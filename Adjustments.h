@@ -4,6 +4,9 @@
 // Select the number that represents your system from the list to the right of each variable. Type that number to the 
 // right of the variable name.
 
+// See the following YouTube video for more information on updating this software and transferring it to your Arduino: https://youtu.be/r4PpJglYBh4
+// The following video will help you in finding and adding music to your game: https://youtu.be/CJBlf6C11SE
+
 // SELECTING SOUND BOARD!!! Identify your sound board (define MY_SOUND_BOARD as 0, 1, 2, or 3):
 #define MY_SOUND_BOARD 3             // 0 = Original Bally Squawk & Talk
                                      // 1 = Geeteoh
@@ -17,6 +20,10 @@
                                      // 3 = Incandescent / LED light(s)
                                      // 4 = Incandescent / LED light(s) with inverted signal
 
+// Retro mode does not currently work well with a Geeteoh board. Turn it off here:
+#define RETRO_MODE_ON        1       // 0 = Retro mode is not offered as a game mode.
+                                     // 1 = Retro mode is listed in the game modes.
+
 #define MAX_HEALTH 3                 // Number of times Ming must be defeated during Final Battle (maximum 4, usual value is 3).
 
 // Two different skill shots are available. Identify the one you want to play:
@@ -27,9 +34,9 @@
 #define BALL_SEARCH_TILT 1           // 0 = Do not allow tilt as part of ball search
                                      // 1 = Tilt allowed after ball search conducted until next playfield switch hit
 
-#define VERSION_NUMBER 2026.04       // Version number appears in Display #1 / Credit display at start of game
+#define VERSION_NUMBER 2026.05       // Version number appears in displays #1 and #2 at start of game
 #define ATTRACT_SPEECH_TIMER 300000  // Amount of time between attract mode speech callouts. Usual value is 300000 = 5x60x1000 = 5 minutes.
-#define MAX_TILT_WARNINGS 1          // Set to number of tilt warnings allowed before losing ball. MINIMUM = 1!
+#define MAX_TILT_WARNINGS 1          // Set to number of tilts required before losing ball. MINIMUM = 1!
 
 // Debug mode can be used to display switch numbers or other data during a game, in order to search for problems with your machine:
 #define DEBUG_MODE 0                 // 0 = no debug messages. 

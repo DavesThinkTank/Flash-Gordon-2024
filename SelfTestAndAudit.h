@@ -43,6 +43,10 @@
 
    - Modified high score and other large-value updates to include values for up to four game modes.
 
+   Version ST2026.05 by Dave's Think Tank
+
+   - Added WARNING_SOUND
+
  */
 
 // Self-Test Machine States (See also FGyyyypmm.h)
@@ -65,6 +69,8 @@
 #define MACHINE_STATE_TEST_COIN_CHUTES    -17
 
 #define MACHINE_STATE_TEST_DONE           -17
+
+#define WARNING_SOUND                       7
 
 unsigned long GetLastSelfTestChangedTime();
 void SetLastSelfTestChangedTime(unsigned long setSelfTestChange);

@@ -1,12 +1,12 @@
-# Flash Gordon 2026
-## Version 2026.04
+# Flash Gordon 2024
+## Version 2026.05
 ## for the Arduino Mega 2560 Rev3
 
 The latest release is available from the Flash-Gordon-2024 main page. Just click on the green <> Code button, and select Download ZIP. 
 
-The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2026) and the Credit window (04). If it doesn't, you have the wrong software or the wrong version! 
+The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2026) and the Player 2 display (05). If it doesn't, you have the wrong software or the wrong version! 
 
-During these four seconds you should also see a 3, 6, or 5 (W, G, or S) in the Match window, indicating the software is set up for a WAV Trigger, Geeteoh, or Squawk & Talk. If it is set up for the wrong sound card, there is a simple change you can make. Check out the section titled “Selecting Your Sound Board” in the manual to find out how. Also note that, sound files are included in a ZIP file on the main page.
+During these four seconds you should also see a 3, 6, or 5 (W, G, or S) in the Match window, indicating the software is set up for a WAV Trigger, Geeteoh, or Squawk & Talk. If it is set up for the wrong sound card, there is a simple change you can make. Check out the section titled “Selecting Your Sound Board” in the manual to find out how. Also note that, sound files are included in a ZIP file on the GitHub page.
 
 ### About Flash Gordon 2024
 
@@ -25,7 +25,9 @@ https://pinside.com/pinball/market/shops/1304-roygbev-pinball/by-game/185-flash-
 Even if you have a Geeteoh board, you may need the latest software update. This can be obtained at a reasonable price by contacting Geeteoh.com.
 
 * The Geeteoh sound files included are meant to be used in Geeteoh sound bank 6, but can be renamed for any other bank if needed. See your Geeteoh manual.
-* The sound files do not include any of the music from the movie, for copyright reasons. I used "In the Space Capsule" during the Skill Shot, "Flash's Theme" for regular game play, and "Battle Theme" during the final battle. All three are available from any music streaming service. I use instrumental versions, or edited out much of the dialog and sound effects, as the voices in the full songs tend to disrupt voices in the game. Just go to Google and search for "Flash Gordon Theme Instrumental" for an instrumental version of "Flash's Theme". There are several online, including several on YouTube. Create a wav file of sound only (no video) and name it 1785_0249_FlashsTheme.wav. You will also want to create two music files, 1707_0171_SpaceCapsule.wav and 1708_0172_BattleTheme.wav.
+* The sound files do not include any of the music from the movie, for copyright reasons. The following YouTube video gives step-by-step instructions on purchasing and installing the music files:
+
+https://youtu.be/CJBlf6C11SE?si=8CX0rF0vCIO9eKpC 
 
 * If you have a strobe light, you will need to go into the "Operator game Adjustments" (more info below) to identify the type of strobe. If you don't have a strobe, watch my video on how to build an LED strobe out of spare parts you probably have lying around the house:
 
@@ -36,14 +38,14 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk .
 * Go to https://github.com/DavesThinkTank/Flash-Gordon-2024 
 * Click on the green Code button
 * Select Download ZIP
-* Place all files in a folder named: FG2026p04
+* Place all files in a folder named: FG2026p05
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2026p04.ino in your FG2026p04 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
-* Attach the Arduino 2560 microcontroller, as part of the daughter card from above, to the J5 connector of your Flash Gordon pinball's MPU board.
+* Find FG2026p05.ino in your FG2026p05 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Attach the Arduino to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh or WAV Trigger, if you have one.
 
 ### Operator game adjustments
-This section is at the top of the FG2026p04.ino file, and groups some variables that the operator may want to adjust. Note, there are very few of these left as most have been converted to self-test game settings.
+This section is at the top of the file "Adjustments.h", and groups some variables that the operator may want to adjust. Edit using the Arduino IDE.
 
 ### Adjustments on first startup
 Score award thresholds and other game settings can be set in self-test / audit / game settings. Be sure to review these as they may have defaulted to zero. See the included manual for a complete description of all settings.
@@ -51,10 +53,26 @@ Score award thresholds and other game settings can be set in self-test / audit /
 ### How to operate self-test / audit / game settings
 - Inner coin door button: Enters self-test / audit / game settings mode and advances through sections
 - Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2026-03manual.docx for a full explanation of the self-tests and game settings available.
-- Coin 3 inner door switch: Some tests require the use of the right-most coin drop switch to modify or move between values. See the included manual for more information.
+- Any other switch: Some tests require the use of another switch switch to modify values or move between options. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
 
 ### Version History
+###Version 2026.05 by Dave's Think Tank
+
+Changes / Additions:
+- Sound added to solenoid test. Beeps whenever a switch is detected.
+- Sound added to stuck switch test. Beeps whenever a switch is hit.
+- Sound added to switch bounce test. Beeps whenever a switch bounce is detected.
+- Modified switch vibration test to ignore single drop target setting off single drop target switch (Flash Gordon specific self-test code required).
+- Modified version display, included RPU version, to match Dick Hamill's version display.
+- Added new sound type: a Geeteoh-command type. Geeteoh does not currently allow commands, but I'm ready :)
+- DeleteQueue modified to never delete Geeteoh commands.
+- Retro mode does not currently work well with a Geeteoh board. I am working with Jeff Klein to make it possible for the Arduino to modify the Geeteoh
+  sound bank, but until then I have added a setting to the Operator Game Adjustments that allows you to turn retro mode off.
+
+Bug Fixes:
+- Game mode could not be changed at start of retro mode. Fixed.
+
 ### Version 2026.04 by Dave's Think Tank
 
 Rule Change:

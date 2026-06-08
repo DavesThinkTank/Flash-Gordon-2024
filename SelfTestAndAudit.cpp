@@ -92,6 +92,16 @@ Version ST2026.04 by Dave's Think Tank
 - Modified code to fully distinguish between single click, double click, and long press of reset button. For example, previously a double click registered as
   a single click followed by a double click.
 
+Version ST2026.05 by Dave's Think Tank
+
+- Sound added to solenoid test. WARNING_SOUND played whenever a switch is detected.
+- Sound added to stuck switch test. WARNING_SOUND played whenever a switch is hit.
+- Sound added to switch bounce test. WARNING_SOUND played whenever a switch bounce is detected.
+
+Version FG2026.05 by Dave's Think Tank
+
+- Modified switch vibration test to ignore single drop target setting off single drop target switch. FLASH GORDON SPECIFIC CODE!
+
  */
 
 #include <Arduino.h>
@@ -363,8 +373,16 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
     if (curSwitch == resetSwitch) SolenoidCycle = !SolenoidCycle;
     if (resetDoubleClick) SolenoidOn = !SolenoidOn;
     if (curSwitch != resetSwitch && curSwitch != otherSwitch && curSwitch != endSwitch && curSwitch != SWITCH_STACK_EMPTY && curSwitch != SW_SELF_TEST_SWITCH) {
-      RPU_SetDisplayCredits(curSwitch);
-      RPU_SetDisplay(3, CurrentTime - SolSwitchTimer, true, 3);
+      if (SavedValue != 11 || curSwitch != 2) { // Single drop target pull down ALWAYS sets off single drop target switch! FLASH GORDON SPECIFIC CODE!
+        RPU_SetDisplayCredits(curSwitch);
+        RPU_SetDisplay(3, CurrentTime - SolSwitchTimer, true, 3);
+        #if defined(RPU_OS_USE_S_AND_T)
+        RPU_PlaySoundSAndT(WARNING_SOUND);
+        #endif
+        #if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
+        returnState = 10000 + WARNING_SOUND;  // Main program has all the info to play sounds using WAV Trigger!
+        #endif
+      }
     }
     if (!SolenoidOn) {
       RPU_SetDisplayCredits(99, false);  // Blank display when solenoids turned off
@@ -415,6 +433,14 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
     }
     RPU_SetDisplayCredits(displayOutput);  // Let user know how many switches are on, since max four displayed
 
+    #if defined(RPU_OS_USE_S_AND_T)
+    if (curSwitch == resetSwitch || curSwitch == otherSwitch || curSwitch == endSwitch || anyOtherClick)
+      RPU_PlaySoundSAndT(WARNING_SOUND);
+    #elif defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
+    if (curSwitch == resetSwitch || curSwitch == otherSwitch || curSwitch == endSwitch || anyOtherClick)
+      returnState = 10000 + WARNING_SOUND;  // Main program has all the info to play sounds using WAV Trigger!
+    #endif
+
     if (resetDoubleClick) {                                          // Double-click to reset all drop targets. FLASH GORDON GAME SPECIFIC CODE!
       RPU_PushToSolenoidStack(8, 5, true);                           // SO_DTARGET_1_RESET
       RPU_PushToTimedSolenoidStack(0, 15, CurrentTime + 250, true);  //SO_DTARGET_4_RESET
@@ -441,6 +467,12 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
       RPU_SetDisplay(0, curSwitch, true);
       RPU_SetDisplay(1, CurrentTime - SwitchTimer, true);
       SwitchTimer = CurrentTime;
+      #if defined(RPU_OS_USE_S_AND_T)
+      RPU_PlaySoundSAndT(WARNING_SOUND);
+      #endif
+      #if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
+      returnState = 10000 + WARNING_SOUND;  // Main program has all the info to play sounds using WAV Trigger!
+      #endif
     } else {
       if (curSwitch != SWITCH_STACK_EMPTY && curSwitch != SW_SELF_TEST_SWITCH) {  // single switch hit once
         RPU_SetDisplay(0, curSwitch, true);
@@ -527,7 +559,7 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
         RPU_PlaySB100(0);
 #endif
 #if defined(RPU_OS_USE_WAV_TRIGGER) || defined(RPU_OS_USE_WAV_TRIGGER_1p3)
-        returnState = 10005;  // Main program has all the info to play sounds using WAV Trigger!
+        returnState = 10000 + 5;  // Main program has all the info to play sounds using WAV Trigger!
 #endif
 
       RPU_TurnOffAllLamps();

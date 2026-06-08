@@ -598,3 +598,26 @@ Changes / Additions:
 Bug Fixes:
 - Ball in Play light did not come on during Final Battle mode. fixed.
 */
+
+
+
+/**************************************************************************
+
+Version 2026.05 by Dave's Think Tank
+
+Rule Change:
+
+Changes / Additions:
+- Sound added to solenoid test. Beeps whenever a switch is detected.
+- Sound added to stuck switch test. Beeps whenever a switch is hit.
+- Sound added to switch bounce test. Beeps whenever a switch bounce is detected.
+- Modified switch vibration test to ignore single drop target setting off single drop target switch (Flash Gordon specific self-test code required).
+- Modified version display, included RPU version, to match Dick Hamill's version display.
+- Added new sound type: a Geeteoh-command type. Geeteoh does not currently allow commands, but I'm ready :)
+- DeleteQueue modified to never delete Geeteoh commands.
+- Retro mode does not currently work well with a Geeteoh board. I am working with Jeff Klein to make it possible for the Arduino to modify the Geeteoh
+  sound bank, but until then I have added a setting to the Operator Game Adjustments that allows you to turn retro mode off.
+
+Bug Fixes:
+- Game mode could not be changed at start of retro mode. Fixed.
+*/
