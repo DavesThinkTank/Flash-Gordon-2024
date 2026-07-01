@@ -621,3 +621,17 @@ Changes / Additions:
 Bug Fixes:
 - Game mode could not be changed at start of retro mode. Fixed.
 */
+
+
+
+/**************************************************************************
+
+Version 2026.06 by Dave's Think Tank
+
+Rule Change:
+
+Changes / Additions:
+- After ball search, and while tilt is deactivated, the Tilt light will flash.
+
+Bug Fixes:
+*/

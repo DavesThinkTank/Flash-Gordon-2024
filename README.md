@@ -1,10 +1,10 @@
 # Flash Gordon 2024
-## Version 2026.05
+## Version 2026.06
 ## for the Arduino Mega 2560 Rev3
 
 The latest release is available from the Flash-Gordon-2024 main page. Just click on the green <> Code button, and select Download ZIP. 
 
-The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2026) and the Player 2 display (05). If it doesn't, you have the wrong software or the wrong version! 
+The program will display the version number for four seconds when the pinball is turned on, in the Player 1 display (2026) and the Player 2 display (06). If it doesn't, you have the wrong software or the wrong version! 
 
 During these four seconds you should also see a 3, 6, or 5 (W, G, or S) in the Match window, indicating the software is set up for a WAV Trigger, Geeteoh, or Squawk & Talk. If it is set up for the wrong sound card, there is a simple change you can make. Check out the section titled “Selecting Your Sound Board” in the manual to find out how. Also note that, sound files are included in a ZIP file on the GitHub page.
 
@@ -38,9 +38,9 @@ https://youtu.be/VCkcB5TzOqM?si=1H3Oql_PQe3d2cmk .
 * Go to https://github.com/DavesThinkTank/Flash-Gordon-2024 
 * Click on the green Code button
 * Select Download ZIP
-* Place all files in a folder named: FG2026p05
+* Place all files in a folder named: FG2026p06
 * Download Arduino’s IDE (Integrated Development Environment). (And pay them a few bucks!)
-* Find FG2026p05.ino in your FG2026p05 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
+* Find FG2026p06.ino in your FG2026p06 folder, and open it with the Arduino IDE. Compile and upload to an Arduino Mega 2560 microcontroller.
 * Attach the Arduino to the J5 connector of your Flash Gordon pinball's MPU board.
 * Unzip the sound files and transfer them to the micro SD card on your Geeteoh or WAV Trigger, if you have one.
 
@@ -55,6 +55,12 @@ Score award thresholds and other game settings can be set in self-test / audit /
 - Outer coin door game button: Can be used to control and direct some tests. See the included file FlashGordon2026-03manual.docx for a full explanation of the self-tests and game settings available.
 - Any other switch: Some tests require the use of another switch switch to modify values or move between options. See the included manual for more information.
 - Slam switch: The slam switch is located on the inside of the game door. It can be used to end a self-test session without going through all the tests. See the manual for more information.
+
+### Version History
+###Version 2026.06 by Dave's Think Tank
+
+Changes / Additions:
+- After ball search, and while tilt is deactivated, the Tilt light will flash.
 
 ### Version History
 ###Version 2026.05 by Dave's Think Tank

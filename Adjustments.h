@@ -21,7 +21,7 @@
                                      // 4 = Incandescent / LED light(s) with inverted signal
 
 // Retro mode does not currently work well with a Geeteoh board. Turn it off here:
-#define RETRO_MODE_ON        0       // 0 = Retro mode is not offered as a game mode.
+#define RETRO_MODE_ON        1       // 0 = Retro mode is not offered as a game mode.
                                      // 1 = Retro mode is listed in the game modes.
 
 #define MAX_HEALTH 3                 // Number of times Ming must be defeated during Final Battle (maximum 4, usual value is 3).
@@ -34,7 +34,7 @@
 #define BALL_SEARCH_TILT 1           // 0 = Do not allow tilt as part of ball search
                                      // 1 = Tilt allowed after ball search conducted until next playfield switch hit
 
-#define VERSION_NUMBER 2026.05       // Version number appears in displays #1 and #2 at start of game
+#define VERSION_NUMBER 2026.06       // Version number appears in displays #1 and #2 at start of game
 #define ATTRACT_SPEECH_TIMER 300000  // Amount of time between attract mode speech callouts. Usual value is 300000 = 5x60x1000 = 5 minutes.
 #define MAX_TILT_WARNINGS 1          // Set to number of tilts required before losing ball. MINIMUM = 1!
 
