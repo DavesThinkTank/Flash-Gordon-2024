@@ -21,7 +21,7 @@
                                      // 4 = Incandescent / LED light(s) with inverted signal
 
 // Retro mode does not currently work well with a Geeteoh board. Turn it off here:
-#define RETRO_MODE_ON        1       // 0 = Retro mode is not offered as a game mode.
+#define RETRO_MODE_ON        0       // 0 = Retro mode is not offered as a game mode.
                                      // 1 = Retro mode is listed in the game modes.
 
 #define MAX_HEALTH 3                 // Number of times Ming must be defeated during Final Battle (maximum 4, usual value is 3).
