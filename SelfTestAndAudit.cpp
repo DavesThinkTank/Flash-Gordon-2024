@@ -102,6 +102,13 @@ Version FG2026.05 by Dave's Think Tank
 
 - Modified switch vibration test to ignore single drop target setting off single drop target switch. FLASH GORDON SPECIFIC CODE!
 
+Version FG2026.08 by Dave's Think Tank
+
+- Upgraded to RPU v5.14. RPU_CycleAllDisplays() in v5.14 has been updated with the changes I made previously (display all 8s), and so I changed my display test 
+  to use the official version. A minor change was required in the call to RPU_CycleAllDisplays().
+- RPU v5.14 also changes the display test to scroll from left to right. I have updated the DIP switch test below to match.
+
+
  */
 
 #include <Arduino.h>
@@ -354,7 +361,7 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
 #endif
     }
     if (resetDoubleClick) display8s = !display8s;
-    RPU_CycleAllDisplays(CurrentTime, CurValue, display8s);
+    RPU_CycleAllDisplays(CurrentTime, CurValue, display8s ? 8 : 255);
   } else if (curState == MACHINE_STATE_TEST_SOLENOIDS) {  //                                                 *** Test Solenoids ***
     if (curStateChanged) {
       RPU_TurnOffAllLamps();
@@ -567,18 +574,18 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
       for (int i = 0; i < 4; i++) {  // Get four DIP banks from memory, convert to binary display
         dipBankVal[i] = RPU_ReadByteFromEEProm(RPU_DIP_BANK + i);
         DisplayDIP[i] = 0;
-        int k = 64;
+        int k = 1;
         for (int j = 0; j < 7; ++j) {
           DisplayDIP[i] = 10 * DisplayDIP[i] + ((dipBankVal[i] & k) != 0);
-          k = k >> 1;
+          k = k << 1;
         }
         RPU_SetDisplayBlank(i, 127);
         RPU_SetDisplay(i, DisplayDIP[i], false);
       }
-      DisplayDIP[4] = 10 * (dipBankVal[1] >= 128) + (dipBankVal[0] >= 128);
-      DisplayDIP[5] = 10 * (dipBankVal[3] >= 128) + (dipBankVal[2] >= 128);
-      RPU_SetDisplayBallInPlay(DisplayDIP[4]);
-      RPU_SetDisplayCredits(DisplayDIP[5]);
+      DisplayDIP[4] = 10 * (dipBankVal[0] >= 128) + (dipBankVal[1] >= 128);
+      DisplayDIP[5] = 10 * (dipBankVal[2] >= 128) + (dipBankVal[3] >= 128);
+      RPU_SetDisplayBallInPlay(DisplayDIP[5]);
+      RPU_SetDisplayCredits(DisplayDIP[4]);
 
       CurValue = 0;
       xDisplay = CurDisplay = 0;
@@ -597,34 +604,34 @@ int RunBaseSelfTest(int curState, boolean curStateChanged, unsigned long Current
     xDigit = CurDigit = CurValue % 8;
 
     if (CurDigit == 7) {             // Final digit must be displayed in ball-in-play or credit window
-      xDigit = CurDisplay & 1;       // Digit 0 or 1, depending on which display being completed
+      xDigit = !(CurDisplay & 1);    // Digit 0 or 1, depending on which display being completed
       xDisplay = 4 + CurValue / 16;  // Ball in play or credit window
     }
 
-    if (resetDoubleClick) {                                               // Flip current digit in current display
+    if (curSwitch == otherSwitch || resetDoubleClick || anyOtherClick) {                                               // Flip current digit in current display
       dipBankVal[CurDisplay] = dipBankVal[CurDisplay] ^ (1 << CurDigit);  // exclusive or function, reverses current digit
       RPU_WriteByteToEEProm(RPU_DIP_BANK + CurDisplay, dipBankVal[CurDisplay]);
 
       if (xDisplay < 4) {  // display value as binary
         DisplayDIP[CurDisplay] = 0;
-        int k = 64;
+        int k = 1;
         for (int j = 0; j < 7; ++j) {
           DisplayDIP[CurDisplay] = 10 * DisplayDIP[CurDisplay] + ((dipBankVal[CurDisplay] & k) != 0);
-          k = k >> 1;
+          k = k << 1;
         }
         RPU_SetDisplay(CurDisplay, DisplayDIP[CurDisplay], false);
       } else if (xDisplay == 4) {
-        DisplayDIP[4] = 10 * (dipBankVal[1] >= 128) + (dipBankVal[0] >= 128);
-        RPU_SetDisplayBallInPlay(DisplayDIP[4]);
+        DisplayDIP[4] = 10 * (dipBankVal[0] >= 128) + (dipBankVal[1] >= 128);
+        RPU_SetDisplayCredits(DisplayDIP[4]);
       } else {
-        DisplayDIP[5] = 10 * (dipBankVal[3] >= 128) + (dipBankVal[2] >= 128);
-        RPU_SetDisplayCredits(DisplayDIP[5]);
+        DisplayDIP[5] = 10 * (dipBankVal[2] >= 128) + (dipBankVal[3] >= 128);
+        RPU_SetDisplayBallInPlay(DisplayDIP[5]);
       }
     }
 
     if (xDisplay < 4)  // set mask for flashing digit
-      RPU_SetDigitFlash(CurDisplay, CurDigit, DisplayDIP[CurDisplay], CurrentTime, 250);
-    else if (xDisplay == 4)
+      RPU_SetDigitFlash(CurDisplay, 6 - CurDigit, DisplayDIP[CurDisplay], CurrentTime, 250);
+    else if (xDisplay == 5)
       RPU_SetDigitFlashBallInPlay(xDigit, CurrentTime, 250);
     else
       RPU_SetDigitFlashCredits(xDigit, CurrentTime, 250);

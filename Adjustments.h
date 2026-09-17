@@ -34,7 +34,7 @@
 #define BALL_SEARCH_TILT 1           // 0 = Do not allow tilt as part of ball search
                                      // 1 = Tilt allowed after ball search conducted until next playfield switch hit
 
-#define VERSION_NUMBER 2026.06       // Version number appears in displays #1 and #2 at start of game
+#define VERSION_NUMBER 2026.08       // Version number appears in displays #1 and #2 at start of game
 #define ATTRACT_SPEECH_TIMER 300000  // Amount of time between attract mode speech callouts. Usual value is 300000 = 5x60x1000 = 5 minutes.
 #define MAX_TILT_WARNINGS 1          // Set to number of tilts required before losing ball. MINIMUM = 1!
 

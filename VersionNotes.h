@@ -635,3 +635,30 @@ Changes / Additions:
 
 Bug Fixes:
 */
+
+
+
+
+
+/**************************************************************************
+
+Version 2026.08 by Dave's Think Tank
+
+Rule Change:
+
+Changes / Additions:
+- Upgraded to RPU v5.14. Minor changes made to RPU.h and RPU_config.h to identify Star Trek requirements and previously added functionality. RPU.cpp modified
+  with previous changes to RPU_SetLampState() and RPU_ReadByteFromEEProm(), as well as including several functions written for Flash Gordon in previous versions. 
+  RPU_CycleAllDisplays() in v5.14 has been updated with the changes I made previously (display all 8s), and so my previous changes are not included. A minor 
+  change was required to SelfTestAndAudit.cpp, in the call to RPU_CycleAllDisplays().
+- RPU v5.14 reverses the direction of the display test. That is, scrolling through the display digits proceeds from left to right, rather than right to left, 
+  as it did previously. My DIP switch test has therefore also been rewritten to display from left to right. That is, the leftmost digit of each display is now the 
+  lowest digit of the corresponding DIP bank, and the rightmost digit is the highest. Scrolling through the digits also proceeds from left to right. This will
+  hopefully be easier to read and understand for most users.
+- The DIP switch test can now use either a double-click of the game button, or a single-click of any other switch, to change the value of a DIP switch.
+
+Bug Fixes:
+- Still working with Dick Hamill to resolve issue of occasional, erroneous, multiple switch reads! Extraneous calls to RPU_DataRead(0) were eliminated. Other
+  changes made to RPU by Hamill to prevent any possibility of interupts during switch reads.
+- Responsiveness of the self-test switch has been improved tremendously!
+*/
