@@ -60,7 +60,7 @@ Score award thresholds and other game settings can be set in self-test / audit /
 ### Version 2026.08 by Dave's Think Tank
 
 Changes / Additions:
-- Upgraded to RPU v5.14. Minor changes made to RPU.h and RPU_config.h to identify Star Trek requirements and previously added functionality. RPU.cpp modified
+- Upgraded to RPU v5.14. Minor changes made to RPU.h and RPU_config.h to identify Flash Gordon requirements and previously added functionality. RPU.cpp modified
   with previous changes to RPU_SetLampState() and RPU_ReadByteFromEEProm(), as well as including several functions written for Flash Gordon in previous versions. 
   RPU_CycleAllDisplays() in v5.14 has been updated with the changes I made previously (display all 8s), and so my previous changes are not included. A minor 
   change was required to SelfTestAndAudit.cpp, in the call to RPU_CycleAllDisplays().
